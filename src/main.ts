@@ -27,6 +27,7 @@ app.innerHTML = `
       </div>
       <div class="topbar topbar-right">
         <div id="profile-pill"></div>
+        <div id="device-toggle"></div>
         <div id="theme-app"></div>
       </div>
     </div>
@@ -54,7 +55,6 @@ app.innerHTML = `
       </div>
 
       <div class="preview">
-        <div id="theme-frame"></div>
         <div class="frame-container" id="ig-frame"></div>
       </div>
     </div>
@@ -62,11 +62,11 @@ app.innerHTML = `
 `;
 
 mountProfilePill(document.getElementById("profile-pill")!, store);
+mountThemeToggles(document.getElementById("device-toggle")!, store, {
+  app: false, igFrame: false, device: true,
+});
 mountThemeToggles(document.getElementById("theme-app")!, store, {
   app: true, igFrame: false, device: false,
-});
-mountThemeToggles(document.getElementById("theme-frame")!, store, {
-  app: false, igFrame: false, device: true,
 });
 mountFieldsForm(document.getElementById("controls")!, store);
 mountIGFrame(document.getElementById("ig-frame")!, store);
