@@ -75,16 +75,10 @@ body[data-app-theme="dark"]::before {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
 }
 
-/* ───── Topbar split into two floating pills ───── */
-.topbar-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+/* ───── Floating top-right control pill ───── */
 .topbar {
   display: flex;
   align-items: center;
@@ -98,21 +92,11 @@ body[data-app-theme="dark"]::before {
   box-shadow: var(--shadow-sm);
   min-height: 36px;
 }
-.topbar-left {
-  /* aligns to start of row, content flows naturally */
-}
 .topbar-right {
-  /* sits at end of row, justify-content space-between handles this */
-}
-.topbar h1 {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 4px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
 }
 
 /* ───── Cards (panels) ───── */

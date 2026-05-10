@@ -9,7 +9,6 @@ import { mountFieldsForm } from "./fields-form";
 import { mountProfilePill } from "./profiles";
 import { mountThemeToggles, applyAppTheme } from "./theme";
 import { mountAutosave } from "./drafts";
-import { mountDraftsMenu } from "./drafts-menu";
 import { exportFrameAsPng, todayStamp } from "./export-png";
 import { exportSlidesAsZip } from "./export-zip";
 import type { Slide } from "./types";
@@ -20,16 +19,10 @@ applyAppTheme(store.getState().theme);
 const app = document.getElementById("app")!;
 app.innerHTML = `
   <div class="app-shell">
-    <div class="topbar-row">
-      <div class="topbar topbar-left">
-        <h1>📸 Preview Carrossel</h1>
-        <div id="drafts-menu"></div>
-      </div>
-      <div class="topbar topbar-right">
-        <div id="profile-pill"></div>
-        <div id="device-toggle"></div>
-        <div id="theme-app"></div>
-      </div>
+    <div class="topbar topbar-right">
+      <div id="profile-pill"></div>
+      <div id="device-toggle"></div>
+      <div id="theme-app"></div>
     </div>
 
     <div class="work">
@@ -70,7 +63,7 @@ mountThemeToggles(document.getElementById("theme-app")!, store, {
 });
 mountFieldsForm(document.getElementById("controls")!, store);
 mountIGFrame(document.getElementById("ig-frame")!, store);
-mountDraftsMenu(document.getElementById("drafts-menu")!, store);
+// Drafts menu UI removed for cleaner topbar — autosave still runs in the background
 mountAutosave(store);
 
 // Upload pipeline
