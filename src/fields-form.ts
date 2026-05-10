@@ -2,6 +2,7 @@ import "./fields-form.css";
 import type { Store } from "./state";
 import type { AppState, VisibleComment } from "./types";
 import { clamp, formatTimeAgoOrPassthrough } from "./validations";
+import { mountDropdown, type DropdownInstance } from "./dropdown";
 
 export function mountFieldsForm(
   container: HTMLElement,
@@ -11,7 +12,7 @@ export function mountFieldsForm(
     <div class="fields">
       <div class="group">
         <h3>Slide ativo</h3>
-        <select data-bind="activeSlide"></select>
+        <div data-mount="slide-dropdown"></div>
       </div>
       <div class="group">
         <h3>Caption</h3>
@@ -48,16 +49,40 @@ export function mountFieldsForm(
     </div>
   `;
 
+  // Mount the slide-picker dropdown
+  const slideDropdownEl = container.querySelector(
+    '[data-mount="slide-dropdown"]',
+  ) as HTMLElement;
+
+  function buildSlideOptions(state: AppState) {
+    const total = state.carousel.slides.length;
+    if (total === 0) return [{ value: "0", label: "Sem slides" }];
+    return state.carousel.slides.map((_, i) => ({
+      value: String(i),
+      label: `Slide ${i + 1} de ${total}`,
+    }));
+  }
+
+  const slideDropdown: DropdownInstance = mountDropdown(slideDropdownEl, {
+    options: buildSlideOptions(store.getState()),
+    value: String(store.getState().carousel.activeSlide),
+    onChange: (v) => {
+      store.update((s) => ({
+        ...s,
+        carousel: { ...s.carousel, activeSlide: Number(v) },
+      }));
+    },
+  });
+
   function syncFromState() {
     const s = store.getState();
     const get = (sel: string) =>
       container.querySelector<HTMLInputElement>(`[data-bind="${sel}"]`)!;
 
-    const slideSel = get("activeSlide") as unknown as HTMLSelectElement;
-    slideSel.innerHTML = s.carousel.slides
-      .map((_, i) => `<option value="${i}">Slide ${i + 1} de ${s.carousel.slides.length}</option>`)
-      .join("");
-    slideSel.value = String(s.carousel.activeSlide);
+    slideDropdown.update({
+      options: buildSlideOptions(s),
+      value: String(s.carousel.activeSlide),
+    });
 
     get("caption").value = s.post.caption;
     get("likes").value = s.post.likes;
@@ -79,8 +104,12 @@ export function mountFieldsForm(
   function readVisibleComments(): VisibleComment[] {
     const out: VisibleComment[] = [];
     for (let i = 0; i < 3; i++) {
-      const u = (container.querySelector(`[data-bind="cuser${i}"]`) as HTMLInputElement).value;
-      const t = (container.querySelector(`[data-bind="ctext${i}"]`) as HTMLInputElement).value;
+      const u = (
+        container.querySelector(`[data-bind="cuser${i}"]`) as HTMLInputElement
+      ).value;
+      const t = (
+        container.querySelector(`[data-bind="ctext${i}"]`) as HTMLInputElement
+      ).value;
       if (u || t) out.push({ user: clamp(u, 30), text: clamp(t, 200) });
     }
     return out;
@@ -88,13 +117,9 @@ export function mountFieldsForm(
 
   function onInput(e: Event) {
     const el = e.target as HTMLInputElement;
-    const key = el.dataset.bind!;
-    if (key === "activeSlide") {
-      store.update((s) => ({
-        ...s,
-        carousel: { ...s.carousel, activeSlide: Number(el.value) },
-      }));
-    } else if (key === "caption") {
+    const key = el.dataset.bind;
+    if (!key) return;
+    if (key === "caption") {
       patchPost({ caption: el.value });
     } else if (key === "likes") {
       patchPost({ likes: clamp(el.value, 20) });
@@ -123,5 +148,6 @@ export function mountFieldsForm(
     container.removeEventListener("input", onInput);
     container.removeEventListener("change", onInput);
     off();
+    slideDropdown.destroy();
   };
 }

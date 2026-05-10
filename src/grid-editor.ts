@@ -29,48 +29,61 @@ export function mountGridEditor(
 
   let cuts = [...opts.cuts];
 
-  function render() {
+  function rebuildCuts() {
     strip.querySelectorAll(".cut").forEach((n) => n.remove());
-    const stripW = strip.clientWidth || 1;
     cuts.forEach((c, i) => {
       const node = document.createElement("div");
       node.className = "cut";
       node.dataset.idx = String(i);
       node.style.left = `${(c / opts.imageWidth) * 100}%`;
       strip.appendChild(node);
-      attachDrag(node, i, stripW);
+      attachDrag(node, i);
     });
   }
 
-  function attachDrag(node: HTMLElement, idx: number, stripW: number) {
+  function attachDrag(node: HTMLElement, idx: number) {
     node.addEventListener("pointerdown", (e) => {
       e.preventDefault();
-      node.setPointerCapture(e.pointerId);
+      e.stopPropagation();
+      const stripW = strip.clientWidth || 1;
       const startX = e.clientX;
       const startCut = cuts[idx];
+
       const onMove = (ev: PointerEvent) => {
         const dxPx = ev.clientX - startX;
         const dxImg = (dxPx / stripW) * opts.imageWidth;
-        const newC = Math.max(0, Math.min(opts.imageWidth, startCut + dxImg));
-        cuts = cuts.map((c, i) => (i === idx ? newC : c)).sort((a, b) => a - b);
-        opts.onChange(cuts);
-        render();
+        const newC = Math.max(
+          0,
+          Math.min(opts.imageWidth, startCut + dxImg),
+        );
+        cuts[idx] = newC;
+        // Update only this cut's visual position — DON'T rebuild during drag
+        node.style.left = `${(newC / opts.imageWidth) * 100}%`;
+        // Emit a sorted snapshot so consumer always gets ordered cuts
+        const sorted = [...cuts].sort((a, b) => a - b);
+        opts.onChange(sorted);
       };
+
       const onUp = () => {
-        node.releasePointerCapture(e.pointerId);
-        node.removeEventListener("pointermove", onMove);
-        node.removeEventListener("pointerup", onUp);
+        document.removeEventListener("pointermove", onMove);
+        document.removeEventListener("pointerup", onUp);
+        document.removeEventListener("pointercancel", onUp);
+        // Now sort the internal array and rebuild to reflect final order
+        cuts.sort((a, b) => a - b);
+        rebuildCuts();
       };
-      node.addEventListener("pointermove", onMove);
-      node.addEventListener("pointerup", onUp);
+
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+      document.addEventListener("pointercancel", onUp);
     });
   }
 
   plus.addEventListener("click", () => opts.onCountChange(1));
   minus.addEventListener("click", () => opts.onCountChange(-1));
 
-  render();
-  const onResize = () => render();
+  rebuildCuts();
+  const onResize = () => rebuildCuts();
   window.addEventListener("resize", onResize);
 
   return () => {
