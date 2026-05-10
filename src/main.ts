@@ -20,12 +20,15 @@ applyAppTheme(store.getState().theme);
 const app = document.getElementById("app")!;
 app.innerHTML = `
   <div class="app-shell">
-    <div class="topbar">
-      <h1>📸 Preview Carrossel</h1>
-      <div id="drafts-menu"></div>
-      <div class="spacer"></div>
-      <div id="profile-pill"></div>
-      <div id="theme-app"></div>
+    <div class="topbar-row">
+      <div class="topbar topbar-left">
+        <h1>📸 Preview Carrossel</h1>
+        <div id="drafts-menu"></div>
+      </div>
+      <div class="topbar topbar-right">
+        <div id="profile-pill"></div>
+        <div id="theme-app"></div>
+      </div>
     </div>
 
     <div class="work">
