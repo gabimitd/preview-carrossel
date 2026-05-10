@@ -3,6 +3,7 @@ import "./grid-editor.css";
 export interface GridEditorOptions {
   imageDataUrl: string;
   imageWidth: number;
+  imageHeight: number;
   cuts: number[];
   onChange: (newCuts: number[]) => void;
   onCountChange: (delta: 1 | -1) => void;
@@ -16,6 +17,9 @@ export function mountGridEditor(
   const strip = document.createElement("div");
   strip.className = "grid-strip";
   strip.style.backgroundImage = `url(${opts.imageDataUrl})`;
+  // Preserve image aspect ratio so cuts (positioned in % of strip width)
+  // align exactly with visual slide boundaries.
+  strip.style.aspectRatio = `${opts.imageWidth} / ${opts.imageHeight}`;
   container.appendChild(strip);
 
   const actions = document.createElement("div");

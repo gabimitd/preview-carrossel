@@ -1,10 +1,14 @@
 .grid-strip {
   position: relative;
-  height: 96px;
+  width: 100%;
+  /* aspect-ratio set inline by JS based on source image dimensions
+     so cut lines align with visual slide boundaries */
+  max-height: 140px;
+  min-height: 60px;
   border-radius: 10px;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   user-select: none;
   border: 1px solid var(--border, rgba(255,255,255,0.08));
 }

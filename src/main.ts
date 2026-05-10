@@ -106,6 +106,7 @@ mountUploadZone(zone, input, async (files) => {
       detachGridEditor = mountGridEditor(gridStrip, {
         imageDataUrl: img.src,
         imageWidth: img.naturalWidth,
+        imageHeight: img.naturalHeight,
         cuts: grid.cuts,
         onChange: (cuts) => {
           if (!currentSourceImage) return;
