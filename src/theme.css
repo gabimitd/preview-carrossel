@@ -1,8 +1,8 @@
 .theme-toggles {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 .theme-toggles .seg {
   display: inline-flex;
@@ -11,20 +11,21 @@
   border-radius: 999px;
   overflow: hidden;
   padding: 2px;
-  gap: 2px;
+  gap: 1px;
 }
 .theme-toggles .seg button {
-  padding: 5px 12px;
+  padding: 4px 9px;
   border: none;
   background: transparent;
   color: var(--muted, #71717a);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   font-family: inherit;
   font-weight: 500;
   border-radius: 999px;
   transition: background 0.15s, color 0.15s;
   letter-spacing: -0.005em;
+  line-height: 1.1;
 }
 .theme-toggles .seg button:hover { color: var(--text, #fafafa); }
 .theme-toggles .seg button.active {

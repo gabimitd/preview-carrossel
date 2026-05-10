@@ -28,29 +28,32 @@ app.innerHTML = `
       <div id="theme-app"></div>
     </div>
 
-    <div class="upload-zone" id="upload-zone">
-      <input type="file" id="upload-input" accept="image/*" multiple style="display:none" />
-      <div><strong>Solte aqui a imagem do carrossel</strong> (PNG/JPG larga) ou múltiplos arquivos</div>
-      <div style="font-size:12px;margin-top:4px">ou clique para selecionar</div>
-    </div>
-
-    <div class="grid-edit" id="grid-edit" style="display:none">
-      <h3>Ajustar corte da grade</h3>
-      <div id="grid-strip"></div>
-      <div id="grid-info" style="font-size:12px;color:var(--muted);margin-top:8px"></div>
-    </div>
-
     <div class="work">
-      <div class="controls" id="controls"></div>
+      <div class="left-col">
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="upload-input" accept="image/*" multiple style="display:none" />
+          <div><strong>Solte a imagem do carrossel</strong></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">PNG/JPG larga ou múltiplos arquivos · ou clique</div>
+        </div>
+
+        <div class="grid-edit" id="grid-edit" style="display:none">
+          <h3>Ajustar corte da grade</h3>
+          <div id="grid-strip"></div>
+          <div id="grid-info" style="font-size:11px;color:var(--muted);margin-top:6px"></div>
+        </div>
+
+        <div class="controls" id="controls"></div>
+
+        <div class="actions-bar">
+          <button id="btn-zip">⬇ slides .zip</button>
+          <button id="btn-png" class="primary">⬇ preview .png</button>
+        </div>
+      </div>
+
       <div class="preview">
         <div id="theme-frame"></div>
         <div class="frame-container" id="ig-frame"></div>
       </div>
-    </div>
-
-    <div class="actions-bar">
-      <button id="btn-zip">⬇ Baixar slides .zip</button>
-      <button id="btn-png" class="primary">⬇ Baixar preview .png</button>
     </div>
   </div>
 `;

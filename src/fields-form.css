@@ -1,15 +1,15 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
 }
 .fields .group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .fields .group h3 {
-  font-size: 10.5px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted, #71717a);
@@ -21,12 +21,12 @@
 .fields textarea,
 .fields select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 7px 10px;
   background: var(--panel-2, rgba(255,255,255,0.03));
   color: var(--text, #fafafa);
   border: 1px solid var(--border, rgba(255,255,255,0.08));
-  border-radius: 10px;
-  font-size: 13.5px;
+  border-radius: 8px;
+  font-size: 12.5px;
   font-family: inherit;
   font-feature-settings: "ss01", "cv11";
   box-sizing: border-box;
@@ -50,21 +50,21 @@
 }
 .fields textarea {
   resize: vertical;
-  min-height: 72px;
-  line-height: 1.5;
+  min-height: 56px;
+  line-height: 1.45;
 }
-.fields .row { display: flex; gap: 8px; }
+.fields .row { display: flex; gap: 6px; }
 .fields .row > * { flex: 1; }
 .fields label.check {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   cursor: pointer;
   color: var(--text-soft, #d4d4d8);
   user-select: none;
 }
 .fields label.check input { width: auto; cursor: pointer; }
-.fields .comment-row { display: flex; gap: 6px; }
+.fields .comment-row { display: flex; gap: 5px; }
 .fields .comment-row input.user { flex: 0 0 36%; }
 .fields .comment-row input.text { flex: 1; }
