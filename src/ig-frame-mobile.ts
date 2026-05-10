@@ -8,11 +8,19 @@ export function renderMobileFrame(opts: {
   theme: ThemeState;
 }): string {
   const p = opts.profile;
-  const slide = opts.slides[opts.activeSlide];
   const captionUser = p?.username ?? "";
   const dots = opts.slides
     .map((_, i) => `<span class="${i === opts.activeSlide ? "on" : ""}"></span>`)
     .join("");
+
+  const trackHTML =
+    opts.slides.length > 0
+      ? `<div class="track" style="transform: translateX(-${opts.activeSlide * 100}%);">
+           ${opts.slides
+             .map((s) => `<div class="slide"><img src="${s.dataUrl}" alt="" /></div>`)
+             .join("")}
+         </div>`
+      : "";
 
   return `
     <div class="ig" data-ig-theme="${opts.theme.igFrame}" data-ig-device="mobile">
@@ -32,7 +40,7 @@ export function renderMobileFrame(opts: {
         </div>
       </div>
       <div class="image-wrap">
-        ${slide ? `<img src="${slide.dataUrl}" alt="" />` : ""}
+        ${trackHTML}
         ${
           opts.slides.length > 1
             ? `<div class="nav">${opts.activeSlide + 1}/${opts.slides.length}</div>

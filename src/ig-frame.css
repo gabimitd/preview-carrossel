@@ -64,10 +64,19 @@
   background: #000;
   overflow: hidden;
 }
-.ig .image-wrap img {
+.ig .track {
+  display: flex;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+.ig .slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+}
+.ig .slide img {
   width: 100%;
   display: block;
-  transition: opacity 0.18s ease-out;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
