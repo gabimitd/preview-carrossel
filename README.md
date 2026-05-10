@@ -1,4 +1,4 @@
-# 📸 Preview Carrossel
+<img width="1182" height="867" alt="image" src="https://github.com/user-attachments/assets/642e2dd6-1e27-4945-8f7d-0553d09a2491" /># 📸 Preview Carrossel
 
 > Pré-visualize como seu carrossel do Instagram vai aparecer no feed antes de postar — com mockup mobile e desktop, modo light/dark, e exportação dos slides já cortados.
 
@@ -20,16 +20,16 @@ Tudo no navegador. Sem login, sem backend, sem upload pra servidor — sua image
 ### 🖼️ Detecção e corte automático
 - Sobe **uma imagem larga** (ex: 4320×1350 do Photoshop) e o app detecta sozinho:
   - **1:1 quadrado** (1080×1080)
-  - **4:5 retrato** (1080×1350) — formato padrão do Instagram
+  - **4:5 retrato** (1080×1350)  formato padrão do Instagram
   - **9:16 story** (1080×1920)
-- Algoritmo ancorado pela altura — sinal mais confiável do formato real
+- Algoritmo ancorado pela altura  sinal mais confiável do formato real
 - Se errar, é só **arrastar as linhas de corte** ou usar `+` / `−` pra ajustar
 - Aceita também **múltiplos arquivos individuais** (slide-1.png, slide-2.png...) — pula a detecção e usa direto
 
 ### 📱 Frame realista do Instagram
 - Replica o post oficial do Instagram em **mobile** (vertical, feed) e **desktop** (modal de 2 colunas)
 - Suporte a **modo claro e escuro do Instagram** (preto puro `#000` no dark, igual ao app real)
-- **Carrossel deslizante de verdade** — arrasta a imagem com o dedo/mouse e ela segue em tempo real, com snap suave no release (FLIP animation, easing `cubic-bezier(0.25, 1, 0.5, 1)`)
+- **Carrossel deslizante de verdade**  arrasta a imagem com o dedo/mouse e ela segue em tempo real, com snap suave no release (FLIP animation, easing `cubic-bezier(0.25, 1, 0.5, 1)`)
 - Resistência nas bordas (primeiro/último slide), detecção de scroll vertical, navegação por teclado (← →) e setas no hover
 
 ### ✏️ Tudo editável
@@ -44,13 +44,13 @@ Tudo no navegador. Sem login, sem backend, sem upload pra servidor — sua image
 ### 👥 Múltiplos perfis salvos
 - Até 5 perfis (logo + @) guardados no `localStorage`
 - Troca de perfil em 1 clique
-- Cada navegador tem seus próprios perfis — perfeito pra usar com várias marcas/clientes
+- Cada navegador tem seus próprios perfis  perfeito pra usar com várias marcas/clientes
 
 ### 💾 Rascunhos automáticos
 - Cada carrossel que você sobe vira um rascunho automaticamente
 - Lista de até 5 rascunhos recentes com thumbnail no topo
 - 1 clique pra restaurar
-- Tratamento de quota do `localStorage` — descarta o mais antigo se encher
+- Tratamento de quota do `localStorage`  descarta o mais antigo se encher
 
 ### 🎨 Design futurista clean
 - Tipografia **Inter** com features tipográficas
@@ -68,12 +68,12 @@ Tudo no navegador. Sem login, sem backend, sem upload pra servidor — sua image
 ## 🛠️ Stack
 
 - **[Vite 5](https://vitejs.dev/)** + **[TypeScript](https://www.typescriptlang.org/)** strict (sem framework UI — vanilla JS reativo com store próprio)
-- **[Vitest](https://vitest.dev/)** + jsdom — 29 testes cobrindo o store, persistência, validações, detecção de grade e splitter
+- **[Vitest](https://vitest.dev/)** + jsdom  29 testes cobrindo o store, persistência, validações, detecção de grade e splitter
 - **Canvas API nativa** — todo o processamento de imagem (corte, redimensionamento, thumbnails) no browser
-- **[JSZip](https://stuk.github.io/jszip/)** — empacotamento dos slides
-- **[html-to-image](https://github.com/bubkoo/html-to-image)** — captura do preview em PNG
-- **localStorage** — persistência de perfis, rascunhos e tema (com fallback de quota)
-- **Vercel** — deploy estático automático
+- **[JSZip](https://stuk.github.io/jszip/)**  empacotamento dos slides
+- **[html-to-image](https://github.com/bubkoo/html-to-image)**  captura do preview em PNG
+- **localStorage**  persistência de perfis, rascunhos e tema (com fallback de quota)
+- **Vercel**  deploy estático automático
 
 Bundle final: **~136 KB** (44 KB gzipped). Sem dependências de framework, hot reload instantâneo no dev.
 
@@ -163,11 +163,11 @@ npm test
 ```
 
 29 testes em 5 arquivos:
-- `state.test.ts` — store reativo (subscribe/setState/update/identity check)
-- `storage.test.ts` — localStorage helpers + QuotaExceededError fallback
-- `validations.test.ts` — sanitização de username, clamp, formatação de tempo
-- `grid-detect.test.ts` — todos os formatos comuns + casos com padding extra
-- `splitter.test.ts` — corte do canvas com cuts uniformes, não-uniformes e fora dos limites
+- `state.test.ts` • store reativo (subscribe/setState/update/identity check)
+- `storage.test.ts` • localStorage helpers + QuotaExceededError fallback
+- `validations.test.ts` • sanitização de username, clamp, formatação de tempo
+- `grid-detect.test.ts` • todos os formatos comuns + casos com padding extra
+- `splitter.test.ts` • corte do canvas com cuts uniformes, não-uniformes e fora dos limites
 
 ---
 
@@ -188,5 +188,3 @@ PRs são bem-vindas. Algumas ideias do que poderia entrar numa v2:
 MIT.
 
 ---
-
-Feito com ☕ e brainstorm guiado por skills do [superpowers](https://github.com/anthropic-experimental/cowork).
