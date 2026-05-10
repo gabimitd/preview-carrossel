@@ -165,10 +165,10 @@ body[data-app-theme="dark"]::before {
   font-weight: 600;
 }
 
-/* ───── Work area: left column + preview ───── */
+/* ───── Work area: form on left, preview centered on page, balance on right ───── */
 .work {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 340px 1fr 340px;
   gap: 14px;
   align-items: start;
 }
@@ -177,6 +177,7 @@ body[data-app-theme="dark"]::before {
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+  grid-column: 1;
 }
 .left-col .controls {
   padding: 14px;
@@ -184,21 +185,19 @@ body[data-app-theme="dark"]::before {
   overflow: visible;
 }
 
-/* ───── Preview (no card — floats on background, vertically centered) ───── */
+/* ───── Preview (no card — floats on background, in the middle column) ───── */
 .preview {
+  grid-column: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 12px;
   background: transparent;
   border: none;
   box-shadow: none;
   position: sticky;
   top: 14px;
-  /* Vertically center inside viewport when sticky */
-  min-height: calc(100vh - 60px);
-  padding: 20px 0;
+  padding: 8px 0 24px;
 }
 .preview .frame-container {
   width: 100%;
@@ -254,9 +253,14 @@ body[data-app-theme="dark"]::before {
 }
 
 /* ───── Responsive ───── */
+@media (max-width: 1100px) {
+  /* Drop the right balance column when space is tight */
+  .work { grid-template-columns: 340px 1fr; }
+}
 @media (max-width: 900px) {
   .work { grid-template-columns: 1fr; }
-  .preview { position: static; }
+  .left-col, .preview { grid-column: auto; }
+  .preview { position: static; padding: 12px 0; }
   .app-shell { padding: 10px 10px 24px; }
 }
 
