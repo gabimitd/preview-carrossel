@@ -46,7 +46,7 @@ function openModal(store: Store<AppState>): void {
             <span data-r="file-label">Escolher logo</span>
           </label>
         </div>
-        <input type="text" placeholder="donamaromba" data-r="user" autocomplete="off" />
+        <input type="text" placeholder="@usuario" data-r="user" autocomplete="off" />
         <label class="check"><input type="checkbox" data-r="verif" /> Selo verificado</label>
       </div>
       <div class="actions">
