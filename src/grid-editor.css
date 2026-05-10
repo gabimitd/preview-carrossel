@@ -1,0 +1,45 @@
+.grid-strip {
+  position: relative;
+  height: 90px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  user-select: none;
+}
+.grid-strip .cut {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent, #38bdf8);
+  cursor: col-resize;
+  transform: translateX(-50%);
+}
+.grid-strip .cut::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent, #38bdf8);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px var(--strip-shadow, #0f172a);
+}
+.grid-strip .cut:hover { width: 3px; }
+.grid-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.grid-actions button {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid var(--border, #334155);
+  background: var(--panel, #0b1220);
+  color: var(--text, #e2e8f0);
+  border-radius: 4px;
+  cursor: pointer;
+}
