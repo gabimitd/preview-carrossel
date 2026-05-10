@@ -43,8 +43,8 @@
   color: var(--text, #fafafa);
   border: 1px solid var(--border-strong, rgba(255,255,255,0.12));
   border-radius: 16px;
-  padding: 24px;
-  width: 380px;
+  padding: 20px;
+  width: 400px;
   max-width: 92vw;
   box-shadow: 0 32px 80px -12px rgba(0, 0, 0, 0.6);
   animation: slideUp 0.2s ease-out;
@@ -52,11 +52,13 @@
 @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 .profile-modal h3 {
-  margin: 0 0 16px;
-  font-size: 15px;
+  margin: 0 0 14px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
+
+/* ───── List of saved profiles ───── */
 .profile-modal .list {
   display: flex;
   flex-direction: column;
@@ -64,61 +66,136 @@
   max-height: 220px;
   overflow: auto;
 }
+.profile-modal .list .empty {
+  color: var(--muted, #71717a);
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 0;
+}
 .profile-modal .list .item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
+  gap: 10px;
+  padding: 7px 10px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.12s;
+  transition: background 0.12s, outline 0.12s;
+  outline: 1px solid transparent;
 }
 .profile-modal .list .item:hover { background: var(--panel-2, rgba(255,255,255,0.04)); }
 .profile-modal .list .item.active {
   background: color-mix(in srgb, var(--accent, #818cf8) 15%, transparent);
 }
+.profile-modal .list .item.editing {
+  outline-color: var(--accent, #818cf8);
+}
 .profile-modal .list .item img {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
-.profile-modal .list .item > div { font-size: 13px; font-weight: 500; }
+.profile-modal .list .item .meta {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-modal .list .item .edit,
 .profile-modal .list .item .del {
-  margin-left: auto;
-  font-size: 11px;
+  font-size: 12px;
   background: transparent;
-  border: 1px solid var(--border, rgba(255,255,255,0.1));
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
   color: var(--muted, #71717a);
   border-radius: 6px;
-  padding: 3px 8px;
+  padding: 4px 7px;
   cursor: pointer;
   font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: color 0.15s, border-color 0.15s;
+  line-height: 1;
+}
+.profile-modal .list .item .edit { padding: 4px 6px; }
+.profile-modal .list .item .edit:hover {
+  color: var(--accent, #818cf8);
+  border-color: var(--accent, #818cf8);
 }
 .profile-modal .list .item .del:hover {
   color: #ef4444;
   border-color: #ef4444;
 }
 
-.profile-modal .new {
-  margin-top: 18px;
+/* ───── Form section (add / edit) ───── */
+.profile-modal .form-section {
+  margin-top: 14px;
   border-top: 1px solid var(--border, rgba(255,255,255,0.06));
-  padding-top: 18px;
+  padding-top: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.profile-modal .new input[type="file"] {
-  padding: 8px 10px;
-  border-radius: 8px;
+.profile-modal .section-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted, #71717a);
+  font-weight: 600;
+}
+
+.profile-modal .avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile-modal .avatar-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--panel-2, rgba(255,255,255,0.03));
   border: 1px solid var(--border, rgba(255,255,255,0.08));
+  display: none;
+  flex-shrink: 0;
+}
+.profile-modal .file-pick {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+.profile-modal .file-pick input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.profile-modal .file-pick span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px dashed var(--border-strong, rgba(255,255,255,0.15));
   background: var(--panel-2, rgba(255,255,255,0.03));
   color: var(--text, #fafafa);
-  font-size: 12px;
+  font-size: 12.5px;
+  font-weight: 500;
   font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
 }
-.profile-modal .new input[type="text"] {
+.profile-modal .file-pick:hover span {
+  border-color: var(--accent, #818cf8);
+  background: color-mix(in srgb, var(--accent, #818cf8) 6%, transparent);
+}
+
+.profile-modal input[type="text"] {
   padding: 9px 12px;
   border-radius: 8px;
   border: 1px solid var(--border, rgba(255,255,255,0.08));
@@ -127,12 +204,16 @@
   font-size: 13px;
   font-family: inherit;
 }
-.profile-modal .new input:focus {
+.profile-modal input[type="text"]::placeholder {
+  color: var(--muted, #71717a);
+}
+.profile-modal input[type="text"]:focus {
   outline: none;
   border-color: var(--accent, #818cf8);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #818cf8) 18%, transparent);
 }
-.profile-modal .new label.check {
+
+.profile-modal label.check {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -141,11 +222,13 @@
   color: var(--text-soft, #d4d4d8);
 }
 
+/* ───── Actions ───── */
 .profile-modal .actions {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  margin-top: 18px;
+  margin-top: 14px;
+  flex-wrap: wrap;
 }
 .profile-modal .actions button {
   padding: 8px 16px;
@@ -160,6 +243,15 @@
   transition: background 0.15s, transform 0.1s;
 }
 .profile-modal .actions button:hover { background: rgba(255, 255, 255, 0.06); }
+.profile-modal .actions button[data-r="reset"] {
+  margin-right: auto;
+  color: var(--muted, #71717a);
+  border-color: transparent;
+}
+.profile-modal .actions button[data-r="reset"]:hover {
+  color: var(--text, #fafafa);
+  background: var(--panel-2, rgba(255,255,255,0.03));
+}
 .profile-modal .actions button.primary {
   background: linear-gradient(135deg, var(--accent-from, #ec4899), var(--accent-to, #8b5cf6));
   border-color: transparent;

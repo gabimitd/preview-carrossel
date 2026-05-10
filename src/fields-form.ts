@@ -16,25 +16,25 @@ export function mountFieldsForm(
       </div>
       <div class="group">
         <h3>Caption</h3>
-        <textarea data-bind="caption" rows="3" placeholder="Texto da legenda + #hashtags"></textarea>
+        <textarea data-bind="caption" rows="3" placeholder="Treino de glúteos completo 🍑 salva pra não esquecer #treino #glúteos"></textarea>
       </div>
       <div class="group">
         <h3>Engajamento</h3>
         <div class="row">
-          <input data-bind="likes" placeholder="Curtidas (ex: 1.234)" />
-          <input data-bind="commentsCount" placeholder="Nº comentários" />
+          <input data-bind="likes" placeholder="1.234" />
+          <input data-bind="commentsCount" placeholder="89" />
         </div>
         <input data-bind="timeAgo" placeholder="Há 2 horas" />
       </div>
       <div class="group">
         <h3>Comentários visíveis (até 3)</h3>
         <div class="comment-row">
-          <input class="user" data-bind="cuser0" placeholder="@user" />
-          <input class="text" data-bind="ctext0" placeholder="comentário" />
+          <input class="user" data-bind="cuser0" placeholder="aluna_fit" />
+          <input class="text" data-bind="ctext0" placeholder="amei! 😍" />
         </div>
         <div class="comment-row">
-          <input class="user" data-bind="cuser1" placeholder="@user" />
-          <input class="text" data-bind="ctext1" placeholder="comentário" />
+          <input class="user" data-bind="cuser1" placeholder="maromba_pro" />
+          <input class="text" data-bind="ctext1" placeholder="top demais" />
         </div>
         <div class="comment-row">
           <input class="user" data-bind="cuser2" placeholder="@user" />
@@ -44,7 +44,7 @@ export function mountFieldsForm(
       <div class="group">
         <h3>Extras</h3>
         <label class="check"><input type="checkbox" data-bind="sponsored" /> Patrocinado</label>
-        <input data-bind="location" placeholder="Localização (opcional)" />
+        <input data-bind="location" placeholder="São Paulo, SP" />
       </div>
     </div>
   `;
