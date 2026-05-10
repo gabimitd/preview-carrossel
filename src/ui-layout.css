@@ -106,7 +106,6 @@ body[data-app-theme="dark"]::before {
 .upload-zone,
 .grid-edit,
 .work .controls,
-.work .preview,
 .actions-bar {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -167,12 +166,17 @@ body[data-app-theme="dark"]::before {
   overflow-y: auto;
 }
 .work .preview {
-  padding: 28px;
+  padding: 8px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
   min-height: 600px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 .work .preview .frame-container {
   width: 100%;
