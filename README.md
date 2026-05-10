@@ -2,6 +2,9 @@
 
 > Pré-visualize como seu carrossel do Instagram vai aparecer no feed antes de postar — com mockup mobile e desktop, modo light/dark, e exportação dos slides já cortados.
 
+**🌐 Acesse: [preview-carrossel.vercel.app](https://preview-carrossel.vercel.app)**
+
+[![Vercel](https://img.shields.io/badge/deploy-Vercel-000?logo=vercel)](https://preview-carrossel.vercel.app)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=fff)](https://vitejs.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=fff)](https://www.typescriptlang.org/)
 [![Vitest](https://img.shields.io/badge/tests-29%20passing-22c55e)](https://vitest.dev/)
