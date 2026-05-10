@@ -53,7 +53,16 @@ export function mountThemeToggles(
           | "igFrame"
           | "device";
         const v = b.dataset.v as string;
-        store.update((s) => ({ ...s, theme: { ...s.theme, [seg]: v } }));
+        store.update((s) => {
+          // App theme also drives the IG frame theme — they stay in sync
+          if (seg === "app") {
+            return {
+              ...s,
+              theme: { ...s.theme, app: v as "light" | "dark", igFrame: v as "light" | "dark" },
+            };
+          }
+          return { ...s, theme: { ...s.theme, [seg]: v } };
+        });
       });
     });
   }

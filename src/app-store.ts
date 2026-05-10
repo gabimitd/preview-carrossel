@@ -16,10 +16,13 @@ const KEY_THEME = "pc.theme";
 const KEY_DRAFTS = "pc.drafts";
 
 export function loadInitialState(): AppState {
+  const theme = loadJSON<ThemeState>(KEY_THEME, DEFAULT_THEME);
+  // Keep app and IG frame themes in sync — the user toggles only the app theme
+  theme.igFrame = theme.app;
   return {
     profiles: loadJSON<Profile[]>(KEY_PROFILES, []),
     activeProfileId: loadJSON<string | null>(KEY_ACTIVE_PROFILE, null),
-    theme: loadJSON<ThemeState>(KEY_THEME, DEFAULT_THEME),
+    theme,
     drafts: loadJSON<Draft[]>(KEY_DRAFTS, []),
     carousel: { ...EMPTY_CAROUSEL }, // never persisted as-is
     post: { ...EMPTY_POST },

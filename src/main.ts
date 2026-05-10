@@ -63,7 +63,7 @@ mountThemeToggles(document.getElementById("theme-app")!, store, {
   app: true, igFrame: false, device: false,
 });
 mountThemeToggles(document.getElementById("theme-frame")!, store, {
-  app: false, igFrame: true, device: true,
+  app: false, igFrame: false, device: true,
 });
 mountFieldsForm(document.getElementById("controls")!, store);
 mountIGFrame(document.getElementById("ig-frame")!, store);
