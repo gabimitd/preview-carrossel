@@ -1,0 +1,32 @@
+.fields { display: flex; flex-direction: column; gap: 16px; }
+.fields .group { display: flex; flex-direction: column; gap: 4px; }
+.fields .group h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted, #94a3b8);
+  margin: 0 0 4px;
+}
+.fields input,
+.fields textarea,
+.fields select {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--bg, #0f172a);
+  color: var(--text, #e2e8f0);
+  border: 1px solid var(--border, #334155);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.fields textarea { resize: vertical; min-height: 60px; }
+.fields .row { display: flex; gap: 8px; }
+.fields .row > * { flex: 1; }
+.fields label.check {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; cursor: pointer;
+}
+.fields .comment-row { display: flex; gap: 6px; }
+.fields .comment-row input.user { flex: 0 0 35%; }
+.fields .comment-row input.text { flex: 1; }

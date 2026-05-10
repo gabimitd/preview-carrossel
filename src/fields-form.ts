@@ -1,0 +1,127 @@
+import "./fields-form.css";
+import type { Store } from "./state";
+import type { AppState, VisibleComment } from "./types";
+import { clamp, formatTimeAgoOrPassthrough } from "./validations";
+
+export function mountFieldsForm(
+  container: HTMLElement,
+  store: Store<AppState>,
+): () => void {
+  container.innerHTML = `
+    <div class="fields">
+      <div class="group">
+        <h3>Slide ativo</h3>
+        <select data-bind="activeSlide"></select>
+      </div>
+      <div class="group">
+        <h3>Caption</h3>
+        <textarea data-bind="caption" rows="3" placeholder="Texto da legenda + #hashtags"></textarea>
+      </div>
+      <div class="group">
+        <h3>Engajamento</h3>
+        <div class="row">
+          <input data-bind="likes" placeholder="Curtidas (ex: 1.234)" />
+          <input data-bind="commentsCount" placeholder="Nº comentários" />
+        </div>
+        <input data-bind="timeAgo" placeholder="Há 2 horas" />
+      </div>
+      <div class="group">
+        <h3>Comentários visíveis (até 3)</h3>
+        <div class="comment-row">
+          <input class="user" data-bind="cuser0" placeholder="@user" />
+          <input class="text" data-bind="ctext0" placeholder="comentário" />
+        </div>
+        <div class="comment-row">
+          <input class="user" data-bind="cuser1" placeholder="@user" />
+          <input class="text" data-bind="ctext1" placeholder="comentário" />
+        </div>
+        <div class="comment-row">
+          <input class="user" data-bind="cuser2" placeholder="@user" />
+          <input class="text" data-bind="ctext2" placeholder="comentário" />
+        </div>
+      </div>
+      <div class="group">
+        <h3>Extras</h3>
+        <label class="check"><input type="checkbox" data-bind="sponsored" /> Patrocinado</label>
+        <input data-bind="location" placeholder="Localização (opcional)" />
+      </div>
+    </div>
+  `;
+
+  function syncFromState() {
+    const s = store.getState();
+    const get = (sel: string) =>
+      container.querySelector<HTMLInputElement>(`[data-bind="${sel}"]`)!;
+
+    const slideSel = get("activeSlide") as unknown as HTMLSelectElement;
+    slideSel.innerHTML = s.carousel.slides
+      .map((_, i) => `<option value="${i}">Slide ${i + 1} de ${s.carousel.slides.length}</option>`)
+      .join("");
+    slideSel.value = String(s.carousel.activeSlide);
+
+    get("caption").value = s.post.caption;
+    get("likes").value = s.post.likes;
+    get("commentsCount").value = s.post.commentsCount;
+    get("timeAgo").value = s.post.timeAgo;
+    get("location").value = s.post.location;
+    get("sponsored").checked = s.post.sponsored;
+    for (let i = 0; i < 3; i++) {
+      const c: VisibleComment | undefined = s.post.visibleComments[i];
+      get(`cuser${i}`).value = c?.user ?? "";
+      get(`ctext${i}`).value = c?.text ?? "";
+    }
+  }
+
+  function patchPost(patch: Partial<AppState["post"]>) {
+    store.update((s) => ({ ...s, post: { ...s.post, ...patch } }));
+  }
+
+  function readVisibleComments(): VisibleComment[] {
+    const out: VisibleComment[] = [];
+    for (let i = 0; i < 3; i++) {
+      const u = (container.querySelector(`[data-bind="cuser${i}"]`) as HTMLInputElement).value;
+      const t = (container.querySelector(`[data-bind="ctext${i}"]`) as HTMLInputElement).value;
+      if (u || t) out.push({ user: clamp(u, 30), text: clamp(t, 200) });
+    }
+    return out;
+  }
+
+  function onInput(e: Event) {
+    const el = e.target as HTMLInputElement;
+    const key = el.dataset.bind!;
+    if (key === "activeSlide") {
+      store.update((s) => ({
+        ...s,
+        carousel: { ...s.carousel, activeSlide: Number(el.value) },
+      }));
+    } else if (key === "caption") {
+      patchPost({ caption: el.value });
+    } else if (key === "likes") {
+      patchPost({ likes: clamp(el.value, 20) });
+    } else if (key === "commentsCount") {
+      patchPost({ commentsCount: clamp(el.value, 20) });
+    } else if (key === "timeAgo") {
+      patchPost({ timeAgo: formatTimeAgoOrPassthrough(el.value) });
+    } else if (key === "location") {
+      patchPost({ location: clamp(el.value, 60) });
+    } else if (key === "sponsored") {
+      patchPost({ sponsored: el.checked });
+    } else if (/^c(user|text)\d$/.test(key)) {
+      patchPost({ visibleComments: readVisibleComments() });
+    }
+  }
+
+  container.addEventListener("input", onInput);
+  container.addEventListener("change", onInput);
+
+  const off = store.subscribe((next, prev) => {
+    if (next.post !== prev.post || next.carousel !== prev.carousel) syncFromState();
+  });
+  syncFromState();
+
+  return () => {
+    container.removeEventListener("input", onInput);
+    container.removeEventListener("change", onInput);
+    off();
+  };
+}

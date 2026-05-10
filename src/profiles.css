@@ -1,0 +1,68 @@
+.profile-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid var(--border, #334155);
+  border-radius: 999px;
+  background: var(--panel, #0b1220);
+  color: var(--text, #e2e8f0);
+  font-size: 12px;
+  cursor: pointer;
+}
+.profile-pill img { width: 20px; height: 20px; border-radius: 50%; }
+.profile-modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.profile-modal {
+  background: var(--panel, #0b1220);
+  color: var(--text, #e2e8f0);
+  border: 1px solid var(--border, #334155);
+  border-radius: 10px;
+  padding: 20px;
+  width: 360px;
+  max-width: 92vw;
+}
+.profile-modal h3 { margin: 0 0 12px; font-size: 14px; }
+.profile-modal .list { display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow: auto; }
+.profile-modal .list .item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.profile-modal .list .item:hover { background: rgba(255,255,255,0.05); }
+.profile-modal .list .item.active { background: rgba(56,189,248,0.2); }
+.profile-modal .list .item img { width: 28px; height: 28px; border-radius: 50%; }
+.profile-modal .list .item .del {
+  margin-left: auto;
+  font-size: 12px;
+  background: transparent; border: 1px solid var(--border, #334155);
+  color: var(--text, #e2e8f0);
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+.profile-modal .new {
+  margin-top: 14px;
+  border-top: 1px solid var(--border, #334155);
+  padding-top: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.profile-modal .new input { padding: 6px 10px; border-radius: 4px; border: 1px solid var(--border, #334155); background: var(--bg, #0f172a); color: var(--text, #e2e8f0); }
+.profile-modal .new label.check { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+.profile-modal .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+.profile-modal .actions button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #334155);
+  background: var(--panel, #0b1220);
+  color: var(--text, #e2e8f0);
+  cursor: pointer;
+}
+.profile-modal .actions button.primary {
+  background: linear-gradient(135deg, #ec4899, #a855f7);
+  border-color: transparent;
+  color: white;
+}

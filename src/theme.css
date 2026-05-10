@@ -1,0 +1,23 @@
+.theme-toggles {
+  display: flex; gap: 6px; align-items: center;
+  font-size: 12px;
+}
+.theme-toggles .seg {
+  display: inline-flex;
+  background: var(--panel, #0b1220);
+  border: 1px solid var(--border, #334155);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.theme-toggles .seg button {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted, #94a3b8);
+  cursor: pointer;
+  font-size: 12px;
+}
+.theme-toggles .seg button.active {
+  background: var(--text, #f1f5f9);
+  color: var(--bg, #0f172a);
+}
