@@ -42,28 +42,46 @@ export function mountIGFrame(
   function attachSwipe() {
     const wrap = container.querySelector(".image-wrap") as HTMLElement | null;
     if (!wrap) return;
+    if (store.getState().carousel.slides.length <= 1) {
+      wrap.style.cursor = "default";
+      return;
+    }
     wrap.style.touchAction = "pan-y";
+    wrap.style.cursor = "grab";
+
     let startX = 0;
     let startY = 0;
     let dragging = false;
-    wrap.addEventListener("pointerdown", (e) => {
-      startX = e.clientX;
-      startY = e.clientY;
-      dragging = true;
-      try { wrap.setPointerCapture(e.pointerId); } catch { /* ignore */ }
-    });
-    wrap.addEventListener("pointerup", (e) => {
+
+    function onUp(e: PointerEvent) {
       if (!dragging) return;
       dragging = false;
-      try { wrap.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
+      if (wrap) wrap.style.cursor = "grab";
+      document.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointercancel", onUp);
+
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return;
       if (Math.abs(dy) > Math.abs(dx)) return; // ignore vertical drags
       const cur = store.getState().carousel.activeSlide;
       setActive(dx < 0 ? cur + 1 : cur - 1);
-    });
-    wrap.addEventListener("pointercancel", () => { dragging = false; });
+    }
+
+    function onDown(e: PointerEvent) {
+      // Don't intercept clicks on nav buttons
+      const target = e.target as HTMLElement;
+      if (target.closest(".carousel-nav")) return;
+      startX = e.clientX;
+      startY = e.clientY;
+      dragging = true;
+      if (wrap) wrap.style.cursor = "grabbing";
+      e.preventDefault();
+      document.addEventListener("pointerup", onUp);
+      document.addEventListener("pointercancel", onUp);
+    }
+
+    wrap.addEventListener("pointerdown", onDown);
   }
 
   function attachClickZones() {
@@ -91,7 +109,7 @@ export function mountIGFrame(
     wrap.appendChild(next);
   }
 
-  // Keyboard arrows when frame area is focused/visible
+  // Keyboard arrows when not in an input
   function onKey(e: KeyboardEvent) {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
     if (e.key === "ArrowLeft") {

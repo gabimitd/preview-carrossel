@@ -43,4 +43,21 @@ describe("detectGrid", () => {
     expect(r.format).toBe("4:5");
     expect(r.nSlides).toBe(1);
   });
+
+  it("detects 5 portrait slides at 5400×1350 (was ambiguous with 1:1 before)", () => {
+    const r = detectGrid(5400, 1350);
+    expect(r.format).toBe("4:5");
+    expect(r.slideWidth).toBe(1080);
+    expect(r.nSlides).toBe(5);
+    expect(r.hasPadding).toBe(false);
+    expect(r.cuts).toEqual([1080, 2160, 3240, 4320]);
+  });
+
+  it("detects 4 square slides at 4320×1080 (height anchors to 1:1)", () => {
+    const r = detectGrid(4320, 1080);
+    expect(r.format).toBe("1:1");
+    expect(r.slideWidth).toBe(1080);
+    expect(r.nSlides).toBe(4);
+    expect(r.hasPadding).toBe(false);
+  });
 });
