@@ -3,7 +3,7 @@ import { createAppStore } from "./app-store";
 import { mountUploadZone, loadImagesFromFiles } from "./upload";
 import { detectGrid } from "./grid-detect";
 import { splitImage } from "./splitter";
-import { mountGridEditor } from "./grid-editor";
+import { mountGridEditor, type GridEditorInstance } from "./grid-editor";
 import { mountIGFrame } from "./ig-frame";
 import { mountFieldsForm } from "./fields-form";
 import { mountProfilePill } from "./profiles";
@@ -79,7 +79,7 @@ const input = document.getElementById("upload-input") as HTMLInputElement;
 const gridEdit = document.getElementById("grid-edit")!;
 const gridStrip = document.getElementById("grid-strip")!;
 const gridInfo = document.getElementById("grid-info")!;
-let detachGridEditor: (() => void) | null = null;
+let gridEditor: GridEditorInstance | null = null;
 let currentSourceImage: HTMLImageElement | null = null;
 
 mountUploadZone(zone, input, async (files) => {
@@ -102,8 +102,8 @@ mountUploadZone(zone, input, async (files) => {
       }));
       gridEdit.style.display = "block";
       gridInfo.textContent = `Detectado: ${grid.nSlides} slides · ${grid.slideWidth}×${grid.slideHeight} (${grid.format})${grid.hasPadding ? ` · padding extra de ${grid.paddingPx}px` : ""}`;
-      detachGridEditor?.();
-      detachGridEditor = mountGridEditor(gridStrip, {
+      gridEditor?.destroy();
+      gridEditor = mountGridEditor(gridStrip, {
         imageDataUrl: img.src,
         imageWidth: img.naturalWidth,
         imageHeight: img.naturalHeight,
@@ -117,23 +117,30 @@ mountUploadZone(zone, input, async (files) => {
           }));
         },
         onCountChange: (delta) => {
-          const s = store.getState();
-          let cuts = s.carousel.cuts;
-          if (delta === 1) cuts = [...cuts, img.naturalWidth - 100];
-          else if (cuts.length > 0) cuts = cuts.slice(0, -1);
           if (!currentSourceImage) return;
+          const s = store.getState();
+          const currentN = s.carousel.cuts.length + 1;
+          const newN = Math.max(1, Math.min(10, currentN + delta));
+          if (newN === currentN) return;
+          // Distribute uniformly: N slides → cuts at i × (imageWidth / N)
+          const W = currentSourceImage.naturalWidth / newN;
+          const cuts: number[] = [];
+          for (let i = 1; i < newN; i++) cuts.push(W * i);
           const next = splitImage(currentSourceImage, cuts);
           store.update((s2) => ({
             ...s2,
             carousel: { ...s2.carousel, cuts, slides: next, activeSlide: 0 },
           }));
+          // Sync the editor's internal state + redraw the cut lines
+          gridEditor?.setCuts(cuts);
         },
       });
     } else {
       // multiple files: skip grid editor
       currentSourceImage = null;
       gridEdit.style.display = "none";
-      detachGridEditor?.();
+      gridEditor?.destroy();
+      gridEditor = null;
       const slides: Slide[] = result.images.map((img) => ({
         dataUrl: img.src,
         w: img.naturalWidth,

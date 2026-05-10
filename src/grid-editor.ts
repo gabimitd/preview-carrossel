@@ -9,10 +9,15 @@ export interface GridEditorOptions {
   onCountChange: (delta: 1 | -1) => void;
 }
 
+export interface GridEditorInstance {
+  setCuts: (newCuts: number[]) => void;
+  destroy: () => void;
+}
+
 export function mountGridEditor(
   container: HTMLElement,
   opts: GridEditorOptions,
-): () => void {
+): GridEditorInstance {
   container.innerHTML = "";
   const strip = document.createElement("div");
   strip.className = "grid-strip";
@@ -33,6 +38,14 @@ export function mountGridEditor(
 
   let cuts = [...opts.cuts];
 
+  function applyVisualPositions() {
+    strip.querySelectorAll<HTMLElement>(".cut").forEach((cn, i) => {
+      const c = cuts[i];
+      if (c === undefined) return;
+      cn.style.left = `${(c / opts.imageWidth) * 100}%`;
+    });
+  }
+
   function rebuildCuts() {
     strip.querySelectorAll(".cut").forEach((n) => n.remove());
     cuts.forEach((c, i) => {
@@ -45,35 +58,40 @@ export function mountGridEditor(
     });
   }
 
-  function attachDrag(node: HTMLElement, idx: number) {
-    node.addEventListener("pointerdown", (e) => {
+  function attachDrag(_node: HTMLElement, idx: number) {
+    _node.addEventListener("pointerdown", (e) => {
       e.preventDefault();
       e.stopPropagation();
       const stripW = strip.clientWidth || 1;
       const startX = e.clientX;
       const startCut = cuts[idx];
+      const N = cuts.length + 1; // total slides
+      // Bounds for the dragged cut so all cuts stay inside (0, imageWidth)
+      // After drag: W = newC / (idx+1); last cut = (N-1)*W = (N-1)/(idx+1) * newC
+      // Require last cut < imageWidth → newC < (idx+1)/(N-1) * imageWidth
+      const minC = idx + 1; // W >= 1
+      const maxC =
+        N > 1 ? ((idx + 1) * (opts.imageWidth - 1)) / (N - 1) : opts.imageWidth - 1;
 
       const onMove = (ev: PointerEvent) => {
         const dxPx = ev.clientX - startX;
         const dxImg = (dxPx / stripW) * opts.imageWidth;
-        const newC = Math.max(
-          0,
-          Math.min(opts.imageWidth, startCut + dxImg),
-        );
-        cuts[idx] = newC;
-        // Update only this cut's visual position — DON'T rebuild during drag
-        node.style.left = `${(newC / opts.imageWidth) * 100}%`;
-        // Emit a sorted snapshot so consumer always gets ordered cuts
-        const sorted = [...cuts].sort((a, b) => a - b);
-        opts.onChange(sorted);
+        const newC = Math.max(minC, Math.min(maxC, startCut + dxImg));
+
+        // Uniform mode: derive slide width W from the dragged cut, redistribute all
+        const W = newC / (idx + 1);
+        for (let i = 0; i < cuts.length; i++) {
+          cuts[i] = (i + 1) * W;
+        }
+        applyVisualPositions();
+        opts.onChange([...cuts]);
       };
 
       const onUp = () => {
         document.removeEventListener("pointermove", onMove);
         document.removeEventListener("pointerup", onUp);
         document.removeEventListener("pointercancel", onUp);
-        // Now sort the internal array and rebuild to reflect final order
-        cuts.sort((a, b) => a - b);
+        // Cuts are already in order from uniform redistribution
         rebuildCuts();
       };
 
@@ -90,8 +108,21 @@ export function mountGridEditor(
   const onResize = () => rebuildCuts();
   window.addEventListener("resize", onResize);
 
-  return () => {
-    window.removeEventListener("resize", onResize);
-    container.innerHTML = "";
+  return {
+    setCuts(newCuts: number[]) {
+      // Compare to skip pointless rebuilds during drag (we already have these)
+      if (
+        newCuts.length === cuts.length &&
+        newCuts.every((c, i) => Math.abs(c - cuts[i]) < 0.5)
+      ) {
+        return;
+      }
+      cuts = [...newCuts];
+      rebuildCuts();
+    },
+    destroy() {
+      window.removeEventListener("resize", onResize);
+      container.innerHTML = "";
+    },
   };
 }
