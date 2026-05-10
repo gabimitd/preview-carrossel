@@ -1,68 +1,171 @@
 .profile-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 4px 10px;
-  border: 1px solid var(--border, #334155);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 5px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
   border-radius: 999px;
-  background: var(--panel, #0b1220);
-  color: var(--text, #e2e8f0);
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  color: var(--text, #fafafa);
   font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
 }
-.profile-pill img { width: 20px; height: 20px; border-radius: 50%; }
+.profile-pill:hover {
+  background: var(--bg-elevated, #0a0a0a);
+  border-color: var(--border-strong, rgba(255,255,255,0.15));
+}
+.profile-pill img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .profile-modal-bg {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
 }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 .profile-modal {
-  background: var(--panel, #0b1220);
-  color: var(--text, #e2e8f0);
-  border: 1px solid var(--border, #334155);
-  border-radius: 10px;
-  padding: 20px;
-  width: 360px;
+  background: var(--bg-elevated, #0a0a0a);
+  color: var(--text, #fafafa);
+  border: 1px solid var(--border-strong, rgba(255,255,255,0.12));
+  border-radius: 16px;
+  padding: 24px;
+  width: 380px;
   max-width: 92vw;
+  box-shadow: 0 32px 80px -12px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.2s ease-out;
 }
-.profile-modal h3 { margin: 0 0 12px; font-size: 14px; }
-.profile-modal .list { display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow: auto; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.profile-modal h3 {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.profile-modal .list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow: auto;
+}
 .profile-modal .list .item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 6px;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background 0.12s;
 }
-.profile-modal .list .item:hover { background: rgba(255,255,255,0.05); }
-.profile-modal .list .item.active { background: rgba(56,189,248,0.2); }
-.profile-modal .list .item img { width: 28px; height: 28px; border-radius: 50%; }
+.profile-modal .list .item:hover { background: var(--panel-2, rgba(255,255,255,0.04)); }
+.profile-modal .list .item.active {
+  background: color-mix(in srgb, var(--accent, #818cf8) 15%, transparent);
+}
+.profile-modal .list .item img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profile-modal .list .item > div { font-size: 13px; font-weight: 500; }
 .profile-modal .list .item .del {
   margin-left: auto;
-  font-size: 12px;
-  background: transparent; border: 1px solid var(--border, #334155);
-  color: var(--text, #e2e8f0);
-  border-radius: 4px;
-  padding: 2px 6px;
-  cursor: pointer;
-}
-.profile-modal .new {
-  margin-top: 14px;
-  border-top: 1px solid var(--border, #334155);
-  padding-top: 14px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.profile-modal .new input { padding: 6px 10px; border-radius: 4px; border: 1px solid var(--border, #334155); background: var(--bg, #0f172a); color: var(--text, #e2e8f0); }
-.profile-modal .new label.check { display: flex; gap: 6px; align-items: center; font-size: 12px; }
-.profile-modal .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
-.profile-modal .actions button {
-  padding: 6px 12px;
+  font-size: 11px;
+  background: transparent;
+  border: 1px solid var(--border, rgba(255,255,255,0.1));
+  color: var(--muted, #71717a);
   border-radius: 6px;
-  border: 1px solid var(--border, #334155);
-  background: var(--panel, #0b1220);
-  color: var(--text, #e2e8f0);
+  padding: 3px 8px;
   cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
 }
+.profile-modal .list .item .del:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.profile-modal .new {
+  margin-top: 18px;
+  border-top: 1px solid var(--border, rgba(255,255,255,0.06));
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile-modal .new input[type="file"] {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  color: var(--text, #fafafa);
+  font-size: 12px;
+  font-family: inherit;
+}
+.profile-modal .new input[type="text"] {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  color: var(--text, #fafafa);
+  font-size: 13px;
+  font-family: inherit;
+}
+.profile-modal .new input:focus {
+  outline: none;
+  border-color: var(--accent, #818cf8);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #818cf8) 18%, transparent);
+}
+.profile-modal .new label.check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12.5px;
+  cursor: pointer;
+  color: var(--text-soft, #d4d4d8);
+}
+
+.profile-modal .actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+.profile-modal .actions button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong, rgba(255,255,255,0.12));
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  color: var(--text, #fafafa);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s, transform 0.1s;
+}
+.profile-modal .actions button:hover { background: rgba(255, 255, 255, 0.06); }
 .profile-modal .actions button.primary {
-  background: linear-gradient(135deg, #ec4899, #a855f7);
+  background: linear-gradient(135deg, var(--accent-from, #ec4899), var(--accent-to, #8b5cf6));
   border-color: transparent;
   color: white;
+}
+.profile-modal .actions button.primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 20px -4px rgba(236, 72, 153, 0.5);
 }

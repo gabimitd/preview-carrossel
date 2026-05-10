@@ -1,23 +1,34 @@
 .theme-toggles {
-  display: flex; gap: 6px; align-items: center;
+  display: flex;
+  gap: 6px;
+  align-items: center;
   font-size: 12px;
 }
 .theme-toggles .seg {
   display: inline-flex;
-  background: var(--panel, #0b1220);
-  border: 1px solid var(--border, #334155);
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
   border-radius: 999px;
   overflow: hidden;
+  padding: 2px;
+  gap: 2px;
 }
 .theme-toggles .seg button {
-  padding: 4px 10px;
+  padding: 5px 12px;
   border: none;
   background: transparent;
-  color: var(--muted, #94a3b8);
+  color: var(--muted, #71717a);
   cursor: pointer;
   font-size: 12px;
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: 999px;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: -0.005em;
 }
+.theme-toggles .seg button:hover { color: var(--text, #fafafa); }
 .theme-toggles .seg button.active {
-  background: var(--text, #f1f5f9);
-  color: var(--bg, #0f172a);
+  background: var(--text, #fafafa);
+  color: var(--bg-elevated, #0a0a0a);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }

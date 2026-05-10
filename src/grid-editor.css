@@ -1,45 +1,57 @@
 .grid-strip {
   position: relative;
-  height: 90px;
-  border-radius: 6px;
+  height: 96px;
+  border-radius: 10px;
   overflow: hidden;
   background-size: cover;
   background-position: center;
   user-select: none;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
 }
 .grid-strip .cut {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--accent, #38bdf8);
+  background: var(--accent, #818cf8);
   cursor: col-resize;
   transform: translateX(-50%);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, #818cf8) 60%, transparent);
 }
 .grid-strip .cut::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: var(--accent, #38bdf8);
+  background: var(--accent, #818cf8);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 2px var(--strip-shadow, #0f172a);
+  box-shadow:
+    0 0 0 2px var(--strip-shadow, #0a0a0a),
+    0 0 16px color-mix(in srgb, var(--accent, #818cf8) 80%, transparent);
 }
 .grid-strip .cut:hover { width: 3px; }
+
 .grid-actions {
   display: flex;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 .grid-actions button {
-  padding: 4px 10px;
+  padding: 6px 12px;
   font-size: 12px;
-  border: 1px solid var(--border, #334155);
-  background: var(--panel, #0b1220);
-  color: var(--text, #e2e8f0);
-  border-radius: 4px;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  background: var(--panel-2, rgba(255,255,255,0.03));
+  color: var(--text, #fafafa);
+  border-radius: 8px;
   cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: background 0.15s, border-color 0.15s;
+}
+.grid-actions button:hover {
+  background: var(--bg-elevated, #0a0a0a);
+  border-color: var(--border-strong, rgba(255,255,255,0.15));
 }

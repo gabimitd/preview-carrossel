@@ -4,6 +4,8 @@ import "./ig-frame.css";
 import { renderMobileFrame } from "./ig-frame-mobile";
 import { renderDesktopFrame } from "./ig-frame-desktop";
 
+const SWIPE_THRESHOLD_PX = 40;
+
 export function mountIGFrame(
   container: HTMLElement,
   store: Store<AppState>,
@@ -21,8 +23,89 @@ export function mountIGFrame(
       post: s.post,
       theme: s.theme,
     });
+    attachSwipe();
+    attachClickZones();
   }
 
+  function setActive(next: number) {
+    const s = store.getState();
+    const total = s.carousel.slides.length;
+    if (total <= 1) return;
+    const clamped = Math.max(0, Math.min(total - 1, next));
+    if (clamped === s.carousel.activeSlide) return;
+    store.update((st) => ({
+      ...st,
+      carousel: { ...st.carousel, activeSlide: clamped },
+    }));
+  }
+
+  function attachSwipe() {
+    const wrap = container.querySelector(".image-wrap") as HTMLElement | null;
+    if (!wrap) return;
+    wrap.style.touchAction = "pan-y";
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+    wrap.addEventListener("pointerdown", (e) => {
+      startX = e.clientX;
+      startY = e.clientY;
+      dragging = true;
+      try { wrap.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    });
+    wrap.addEventListener("pointerup", (e) => {
+      if (!dragging) return;
+      dragging = false;
+      try { wrap.releasePointerCapture(e.pointerId); } catch { /* ignore */ }
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return;
+      if (Math.abs(dy) > Math.abs(dx)) return; // ignore vertical drags
+      const cur = store.getState().carousel.activeSlide;
+      setActive(dx < 0 ? cur + 1 : cur - 1);
+    });
+    wrap.addEventListener("pointercancel", () => { dragging = false; });
+  }
+
+  function attachClickZones() {
+    const wrap = container.querySelector(".image-wrap") as HTMLElement | null;
+    if (!wrap) return;
+    const total = store.getState().carousel.slides.length;
+    if (total <= 1) return;
+    const prev = document.createElement("button");
+    prev.className = "carousel-nav prev";
+    prev.setAttribute("aria-label", "slide anterior");
+    prev.innerHTML = "‹";
+    const next = document.createElement("button");
+    next.className = "carousel-nav next";
+    next.setAttribute("aria-label", "próximo slide");
+    next.innerHTML = "›";
+    prev.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setActive(store.getState().carousel.activeSlide - 1);
+    });
+    next.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setActive(store.getState().carousel.activeSlide + 1);
+    });
+    wrap.appendChild(prev);
+    wrap.appendChild(next);
+  }
+
+  // Keyboard arrows when frame area is focused/visible
+  function onKey(e: KeyboardEvent) {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    if (e.key === "ArrowLeft") {
+      setActive(store.getState().carousel.activeSlide - 1);
+    } else if (e.key === "ArrowRight") {
+      setActive(store.getState().carousel.activeSlide + 1);
+    }
+  }
+  document.addEventListener("keydown", onKey);
+
   render();
-  return store.subscribe(render);
+  const off = store.subscribe(render);
+  return () => {
+    off();
+    document.removeEventListener("keydown", onKey);
+  };
 }
