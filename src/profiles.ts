@@ -18,7 +18,7 @@ export function mountProfilePill(
     `;
     container
       .querySelector("button")!
-      .addEventListener("click", () => openModal(store));
+      .addEventListener("click", () => openProfileModal(store));
   }
 
   render();
@@ -28,7 +28,7 @@ export function mountProfilePill(
   });
 }
 
-function openModal(store: Store<AppState>): void {
+export function openProfileModal(store: Store<AppState>): void {
   let editingId: string | null = null;
 
   const bg = document.createElement("div");

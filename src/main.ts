@@ -6,8 +6,8 @@ import { splitImage } from "./splitter";
 import { mountGridEditor, type GridEditorInstance } from "./grid-editor";
 import { mountIGFrame } from "./ig-frame";
 import { mountFieldsForm } from "./fields-form";
-import { mountProfilePill } from "./profiles";
-import { mountThemeToggles, applyAppTheme } from "./theme";
+import { mountProfileMenu } from "./profile-menu";
+import { applyAppTheme } from "./theme";
 import { mountAutosave } from "./drafts";
 import { exportFrameAsPng, todayStamp } from "./export-png";
 import { exportSlidesAsZip } from "./export-zip";
@@ -19,10 +19,8 @@ applyAppTheme(store.getState().theme);
 const app = document.getElementById("app")!;
 app.innerHTML = `
   <div class="app-shell">
-    <div class="topbar topbar-right">
-      <div id="profile-pill"></div>
-      <div id="device-toggle"></div>
-      <div id="theme-app"></div>
+    <div class="topbar-right">
+      <div id="profile-menu"></div>
     </div>
 
     <div class="work">
@@ -54,13 +52,7 @@ app.innerHTML = `
   </div>
 `;
 
-mountProfilePill(document.getElementById("profile-pill")!, store);
-mountThemeToggles(document.getElementById("device-toggle")!, store, {
-  app: false, igFrame: false, device: true,
-});
-mountThemeToggles(document.getElementById("theme-app")!, store, {
-  app: true, igFrame: false, device: false,
-});
+mountProfileMenu(document.getElementById("profile-menu")!, store);
 mountFieldsForm(document.getElementById("controls")!, store);
 mountIGFrame(document.getElementById("ig-frame")!, store);
 // Drafts menu UI removed for cleaner topbar — autosave still runs in the background
