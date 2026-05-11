@@ -16,7 +16,7 @@ export function mountFieldsForm(
       </div>
       <div class="group">
         <h3>Caption</h3>
-        <textarea data-bind="caption" rows="3" placeholder="Treino de glúteos completo 🍑 salva pra não esquecer #treino #glúteos"></textarea>
+        <textarea data-bind="caption" rows="3" placeholder="Legenda do post + #hashtags"></textarea>
       </div>
       <div class="group">
         <h3>Engajamento</h3>
@@ -29,12 +29,12 @@ export function mountFieldsForm(
       <div class="group">
         <h3>Comentários visíveis (até 3)</h3>
         <div class="comment-row">
-          <input class="user" data-bind="cuser0" placeholder="aluna_fit" />
-          <input class="text" data-bind="ctext0" placeholder="amei! 😍" />
+          <input class="user" data-bind="cuser0" placeholder="@user" />
+          <input class="text" data-bind="ctext0" placeholder="comentário" />
         </div>
         <div class="comment-row">
-          <input class="user" data-bind="cuser1" placeholder="maromba_pro" />
-          <input class="text" data-bind="ctext1" placeholder="top demais" />
+          <input class="user" data-bind="cuser1" placeholder="@user" />
+          <input class="text" data-bind="ctext1" placeholder="comentário" />
         </div>
         <div class="comment-row">
           <input class="user" data-bind="cuser2" placeholder="@user" />
