@@ -22,7 +22,7 @@ export function trySaveJSONWithFallback<T>(
   prune: () => T,
 ): boolean {
   let current = value;
-  for (let attempt = 0; attempt < 4; attempt++) {
+  for (let attempt = 0; attempt < 10; attempt++) {
     try {
       saveJSON(key, current);
       return true;

@@ -1,8 +1,46 @@
 import type { Store } from "./state";
-import type { AppState, Draft } from "./types";
+import type { AppState, Draft, Slide } from "./types";
 import { resizeElementToThumb } from "./resize-image";
 
 const AUTOSAVE_DEBOUNCE_MS = 800;
+const STORAGE_JPEG_QUALITY = 0.75;
+
+/**
+ * Re-encode a PNG data URL as JPEG to drastically shrink its size in
+ * localStorage. Real-photo carousel slides go from ~1-2MB PNG base64 down
+ * to ~150-300KB JPEG base64, which is the difference between "fits in
+ * localStorage" and "QuotaExceededError". JPEG is already what Instagram
+ * stores anyway, so quality loss is invisible on the platform.
+ */
+async function compressSlideForStorage(dataUrl: string): Promise<string> {
+  if (!dataUrl.startsWith("data:image/png")) return dataUrl; // already compressed
+  try {
+    const img = new Image();
+    await new Promise<void>((res, rej) => {
+      img.onload = () => res();
+      img.onerror = () => rej(new Error("img load failed"));
+      img.src = dataUrl;
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return dataUrl;
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/jpeg", STORAGE_JPEG_QUALITY);
+  } catch {
+    return dataUrl;
+  }
+}
+
+async function compressSlidesForStorage(slides: Slide[]): Promise<Slide[]> {
+  return Promise.all(
+    slides.map(async (sl) => ({
+      ...sl,
+      dataUrl: await compressSlideForStorage(sl.dataUrl),
+    })),
+  );
+}
 
 /**
  * Autosaves the current carousel + post into a Draft entry. The latest
@@ -36,11 +74,13 @@ export function mountAutosave(store: Store<AppState>): () => void {
       thumb = s.carousel.slides[0].dataUrl;
     }
 
+    const compressedSlides = await compressSlidesForStorage(s.carousel.slides);
+
     const draft: Draft = {
       id: currentDraftId ?? crypto.randomUUID(),
       createdAt: Date.now(),
       thumbnailDataUrl: thumb,
-      carouselSlides: s.carousel.slides,
+      carouselSlides: compressedSlides,
       carouselCuts: s.carousel.cuts,
       post: s.post,
     };
@@ -128,11 +168,13 @@ export async function saveDraftSnapshot(
     /* fall back to full data URL */
   }
 
+  const compressedSlides = await compressSlidesForStorage(s.carousel.slides);
+
   const draft: Draft = {
     id: crypto.randomUUID(),
     createdAt: Date.now(),
     thumbnailDataUrl: thumb,
-    carouselSlides: s.carousel.slides,
+    carouselSlides: compressedSlides,
     carouselCuts: s.carousel.cuts,
     post: s.post,
   };
