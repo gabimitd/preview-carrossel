@@ -69,7 +69,7 @@ body[data-app-theme="dark"]::before {
 
 /* ───── Layout shell ───── */
 .app-shell {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 14px 14px 32px;
   display: flex;
@@ -78,25 +78,23 @@ body[data-app-theme="dark"]::before {
   position: relative;
 }
 
-/* ───── Floating top-right control pill ───── */
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 10px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  box-shadow: var(--shadow-sm);
-  min-height: 36px;
-}
+/* ───── Floating top-right control column (vertical stack) ───── */
 .topbar-right {
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  /* No outer pill — each child is its own pill */
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  min-height: 0;
 }
 
 /* ───── Cards (panels) ───── */
@@ -149,10 +147,10 @@ body[data-app-theme="dark"]::before {
   font-weight: 600;
 }
 
-/* ───── Work area: form on left, preview centered on page, balance on right ───── */
+/* ───── Work area: form on left, preview centered, narrow right reserved for floating pills ───── */
 .work {
   display: grid;
-  grid-template-columns: 340px 1fr 340px;
+  grid-template-columns: 320px 1fr 90px;
   gap: 14px;
   align-items: start;
 }
@@ -189,12 +187,12 @@ body[data-app-theme="dark"]::before {
   justify-content: center;
 }
 .preview .frame-container .ig {
-  max-width: 440px;
+  max-width: 460px;
   width: 100%;
   box-shadow: var(--shadow-lg);
 }
 .preview .frame-container .ig[data-ig-device="desktop"] {
-  max-width: 760px;
+  max-width: 880px;
 }
 
 /* ───── Actions bar (compact) ───── */
@@ -238,11 +236,14 @@ body[data-app-theme="dark"]::before {
 
 /* ───── Responsive ───── */
 @media (max-width: 1100px) {
-  /* Drop the right balance column when space is tight */
-  .work { grid-template-columns: 340px 1fr; }
+  /* Still need the 90px right buffer for the floating pills */
+  .work { grid-template-columns: 300px 1fr 90px; }
 }
 @media (max-width: 900px) {
-  .work { grid-template-columns: 1fr; }
+  .work {
+    grid-template-columns: 1fr;
+    padding-top: 130px; /* space for the vertical pill stack at the top */
+  }
   .left-col, .preview { grid-column: auto; }
   .preview { position: static; padding: 12px 0; }
   .app-shell { padding: 10px 10px 24px; }
