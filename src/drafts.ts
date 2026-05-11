@@ -103,3 +103,44 @@ export function deleteDraft(store: Store<AppState>, draftId: string): void {
     drafts: st.drafts.filter((d) => d.id !== draftId),
   }));
 }
+
+/**
+ * Save the current carousel + post as a NEW draft entry (independent of the
+ * autosave's running draft). Used for explicit "Save as new" snapshots.
+ * Returns the id of the new draft, or null if nothing was saved.
+ */
+export async function saveDraftSnapshot(
+  store: Store<AppState>,
+): Promise<string | null> {
+  const s = store.getState();
+  if (s.carousel.slides.length === 0) return null;
+
+  let thumb = s.carousel.slides[0].dataUrl;
+  try {
+    const firstImg = new Image();
+    await new Promise<void>((res, rej) => {
+      firstImg.onload = () => res();
+      firstImg.onerror = () => rej(new Error("img load failed"));
+      firstImg.src = s.carousel.slides[0].dataUrl;
+    });
+    thumb = resizeElementToThumb(firstImg, 80);
+  } catch {
+    /* fall back to full data URL */
+  }
+
+  const draft: Draft = {
+    id: crypto.randomUUID(),
+    createdAt: Date.now(),
+    thumbnailDataUrl: thumb,
+    carouselSlides: s.carousel.slides,
+    carouselCuts: s.carousel.cuts,
+    post: s.post,
+  };
+
+  store.update((st) => {
+    const next = [...st.drafts, draft].slice(-5);
+    return { ...st, drafts: next };
+  });
+
+  return draft.id;
+}

@@ -2,7 +2,7 @@ import "./profile-menu.css";
 import type { Store } from "./state";
 import type { AppState, Draft } from "./types";
 import { openProfileModal } from "./profiles";
-import { restoreDraft, deleteDraft } from "./drafts";
+import { restoreDraft, deleteDraft, saveDraftSnapshot } from "./drafts";
 
 /**
  * Unified shadcn-style dropdown menu that consolidates:
@@ -70,6 +70,14 @@ export function mountProfileMenu(
           <div class="menu-separator"></div>
 
           <div class="menu-label">Recentes</div>
+          ${
+            s.carousel.slides.length > 0
+              ? `<button class="menu-item no-indicator menu-save-now" data-action="save-snapshot" type="button">
+                   <span class="lead-icon">💾</span>
+                   <span>Salvar carrossel atual</span>
+                 </button>`
+              : ""
+          }
           ${renderRecents(s.drafts)}
 
           <div class="menu-separator"></div>
@@ -156,6 +164,12 @@ export function mountProfileMenu(
       openProfileModal(store);
       return;
     }
+    if (action === "save-snapshot") {
+      saveDraftSnapshot(store).then((id) => {
+        if (id) flashSaveConfirmation();
+      });
+      return;
+    }
     if (action.startsWith("device-")) {
       const v = action.slice(7) as "mobile" | "desktop";
       store.update((s) => ({ ...s, theme: { ...s.theme, device: v } }));
@@ -199,6 +213,22 @@ export function mountProfileMenu(
   }
   function onKey(e: KeyboardEvent) {
     if (e.key === "Escape") closeMenu();
+  }
+
+  function flashSaveConfirmation() {
+    // After the store re-renders (draft was added), find the save button
+    // and briefly flash a "Salvo!" state on it
+    requestAnimationFrame(() => {
+      const btn = container.querySelector(".menu-save-now") as HTMLElement | null;
+      if (!btn) return;
+      const original = btn.innerHTML;
+      btn.innerHTML = `<span class="lead-icon">✓</span><span>Salvo!</span>`;
+      btn.classList.add("saved");
+      setTimeout(() => {
+        btn.classList.remove("saved");
+        // Don't restore innerHTML — the store re-render already redrew the menu
+      }, 1200);
+    });
   }
 
   render();

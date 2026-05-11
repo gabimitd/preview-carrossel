@@ -165,6 +165,21 @@
 }
 .menu-item[data-selected="true"] .menu-item-check { opacity: 1; }
 
+/* Explicit "Save now" item — pinned at top of Recentes */
+.menu-save-now {
+  background: color-mix(in srgb, var(--accent, #818cf8) 12%, transparent);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.menu-save-now:hover {
+  background: color-mix(in srgb, var(--accent, #818cf8) 22%, transparent) !important;
+}
+.menu-save-now.saved {
+  background: color-mix(in srgb, #22c55e 18%, transparent);
+  color: #22c55e;
+  transition: background 0.2s, color 0.2s;
+}
+
 /* Recent drafts list */
 .menu-recent-empty {
   padding: 6px 10px 10px;
