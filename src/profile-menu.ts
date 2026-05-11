@@ -221,7 +221,6 @@ export function mountProfileMenu(
     requestAnimationFrame(() => {
       const btn = container.querySelector(".menu-save-now") as HTMLElement | null;
       if (!btn) return;
-      const original = btn.innerHTML;
       btn.innerHTML = `<span class="lead-icon">✓</span><span>Salvo!</span>`;
       btn.classList.add("saved");
       setTimeout(() => {
