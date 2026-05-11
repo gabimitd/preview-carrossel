@@ -1,7 +1,8 @@
 import "./profile-menu.css";
 import type { Store } from "./state";
-import type { AppState } from "./types";
+import type { AppState, Draft } from "./types";
 import { openProfileModal } from "./profiles";
+import { restoreDraft, deleteDraft } from "./drafts";
 
 /**
  * Unified shadcn-style dropdown menu that consolidates:
@@ -68,6 +69,11 @@ export function mountProfileMenu(
 
           <div class="menu-separator"></div>
 
+          <div class="menu-label">Recentes</div>
+          ${renderRecents(s.drafts)}
+
+          <div class="menu-separator"></div>
+
           <div class="menu-label">Modo</div>
           <button class="menu-item" data-action="device-mobile" data-selected="${s.theme.device === "mobile"}" type="button">
             <span class="menu-item-check">
@@ -122,6 +128,24 @@ export function mountProfileMenu(
         e.stopPropagation();
         const action = btn.dataset.action!;
         handleAction(action);
+      });
+    });
+    // Restore draft on click (but not when click hits the delete button)
+    container.querySelectorAll<HTMLElement>("[data-draft]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        if ((e.target as HTMLElement).closest("[data-del-draft]")) return;
+        e.stopPropagation();
+        const id = el.dataset.draft!;
+        restoreDraft(store, id);
+        closeMenu();
+      });
+    });
+    container.querySelectorAll<HTMLElement>("[data-del-draft]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = el.dataset.delDraft!;
+        deleteDraft(store, id);
+        // Menu stays open and re-renders via store subscribe
       });
     });
   }
@@ -179,6 +203,45 @@ export function mountProfileMenu(
 
   render();
   return store.subscribe(render);
+}
+
+function renderRecents(drafts: Draft[]): string {
+  if (drafts.length === 0) {
+    return `<div class="menu-recent-empty">Sem posts salvos ainda</div>`;
+  }
+  const sorted = [...drafts].sort((a, b) => b.createdAt - a.createdAt);
+  return sorted
+    .map((d) => {
+      const cap = d.post.caption.trim();
+      const title = cap
+        ? cap.length > 30
+          ? escapeHtml(cap.slice(0, 28)) + "…"
+          : escapeHtml(cap)
+        : `${d.carouselSlides.length} slide${d.carouselSlides.length === 1 ? "" : "s"}`;
+      return `
+        <div class="menu-draft" data-draft="${d.id}" role="menuitem" tabindex="0">
+          <img src="${d.thumbnailDataUrl}" alt="" />
+          <div class="label">
+            <div class="title">${title}</div>
+            <div class="time">${formatRelativeTime(d.createdAt)} · ${d.carouselSlides.length} slides</div>
+          </div>
+          <button class="del-draft" data-del-draft="${d.id}" title="Excluir rascunho" type="button" aria-label="Excluir rascunho">×</button>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function formatRelativeTime(ts: number): string {
+  const diff = Date.now() - ts;
+  if (diff < 60_000) return "agora";
+  const minutes = Math.floor(diff / 60_000);
+  if (minutes < 60) return `há ${minutes}min`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `há ${hours}h`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `há ${days}d`;
+  return new Date(ts).toLocaleDateString("pt-BR");
 }
 
 function escapeHtml(s: string): string {
