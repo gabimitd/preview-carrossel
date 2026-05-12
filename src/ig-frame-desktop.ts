@@ -1,5 +1,5 @@
 import type { Profile, PostContent, Slide, ThemeState } from "./types";
-import { escapeHtml } from "./ig-frame-mobile";
+import { escapeHtml, renderAvatar, renderUsername } from "./ig-frame-mobile";
 
 export function renderDesktopFrame(opts: {
   profile: Profile | null;
@@ -47,13 +47,9 @@ export function renderDesktopFrame(opts: {
       </div>
       <div class="side">
         <div class="hdr">
-          <div class="av"><img src="${p?.avatarDataUrl ?? ""}" alt="" /></div>
+          <div class="av">${renderAvatar(p)}</div>
           <div>
-            <div class="uname">
-              ${escapeHtml(p?.username ?? "")}${
-                p?.verified ? '<span class="verif">✓</span>' : ""
-              }
-            </div>
+            <div class="uname">${renderUsername(p)}</div>
             <div class="meta">${
               opts.post.sponsored ? "Patrocinado" : escapeHtml(opts.post.location)
             }</div>

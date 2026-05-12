@@ -42,6 +42,25 @@
   object-fit: cover;
   display: block;
 }
+.ig .av-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--ig-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ig-muted);
+}
+.ig .av-placeholder svg {
+  width: 70%;
+  height: 70%;
+  opacity: 0.6;
+}
+.ig .uname-placeholder {
+  color: var(--ig-muted);
+  font-weight: 500;
+}
 .ig .uname {
   font-weight: 600;
   display: flex; align-items: center; gap: 4px;

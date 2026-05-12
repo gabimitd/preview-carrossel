@@ -25,15 +25,9 @@ export function renderMobileFrame(opts: {
   return `
     <div class="ig" data-ig-theme="${opts.theme.igFrame}" data-ig-device="mobile">
       <div class="hdr">
-        <div class="av">
-          <img src="${p?.avatarDataUrl ?? ""}" alt="" />
-        </div>
+        <div class="av">${renderAvatar(p)}</div>
         <div>
-          <div class="uname">
-            ${escapeHtml(p?.username ?? "")}${
-              p?.verified ? '<span class="verif">✓</span>' : ""
-            }
-          </div>
+          <div class="uname">${renderUsername(p)}</div>
           <div class="meta">
             ${opts.post.sponsored ? "Patrocinado" : escapeHtml(opts.post.location)}
           </div>
@@ -73,6 +67,29 @@ function renderComments(post: PostContent): string {
       : "";
   if (!visible && !more) return "";
   return `<div class="comments">${more}${visible}</div>`;
+}
+
+export function renderAvatar(p: Profile | null): string {
+  if (p?.avatarDataUrl) {
+    return `<img src="${p.avatarDataUrl}" alt="" />`;
+  }
+  return `
+    <div class="av-placeholder">
+      <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <circle cx="16" cy="12" r="5"/>
+        <path d="M7 26c0-4 4-7 9-7s9 3 9 7v1H7v-1z"/>
+      </svg>
+    </div>
+  `;
+}
+
+export function renderUsername(p: Profile | null): string {
+  if (p?.username) {
+    return `${escapeHtml(p.username)}${
+      p.verified ? '<span class="verif">✓</span>' : ""
+    }`;
+  }
+  return `<span class="uname-placeholder">@usuario</span>`;
 }
 
 export function escapeHtml(s: string): string {
