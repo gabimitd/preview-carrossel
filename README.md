@@ -1,7 +1,6 @@
 <img width="1890" height="901" alt="image" src="https://github.com/user-attachments/assets/a4a3a142-d758-4b25-a9f9-941104ec7bb4" /># 📸 Preview Carrossel
 
-![Preview Carrossel app](<img width="1890" height="901" alt="image" src="https://github.com/user-attachments/assets/b790661a-6523-4514-a762-c163661c1c2e" />
-)
+
 
 > Pré-visualize como seu carrossel do Instagram vai aparecer no feed antes de postar — com mockup mobile e desktop, modo light/dark, e exportação dos slides já cortados.
 
