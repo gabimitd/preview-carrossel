@@ -58,7 +58,7 @@
   letter-spacing: -0.01em;
 }
 
-/* ───── List of saved profiles ───── */
+/* List of saved profiles */
 .profile-modal .list {
   display: flex;
   flex-direction: column;
@@ -130,7 +130,7 @@
   border-color: #ef4444;
 }
 
-/* ───── Form section (add / edit) ───── */
+/* Form section (add / edit) */
 .profile-modal .form-section {
   margin-top: 14px;
   border-top: 1px solid var(--border, rgba(255,255,255,0.06));
@@ -222,7 +222,7 @@
   color: var(--text-soft, #d4d4d8);
 }
 
-/* ───── Actions ───── */
+/* Actions */
 .profile-modal .actions {
   display: flex;
   gap: 8px;

@@ -65,7 +65,7 @@
   max-height: 240px;
   overflow-y: auto;
 
-  /* shadcn-style entry/exit animation */
+  /* entry/exit animation */
   transform-origin: top center;
   transition:
     opacity 0.12s ease-out,

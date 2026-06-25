@@ -28,7 +28,7 @@ app.innerHTML = `
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="upload-input" accept="image/*" multiple style="display:none" />
           <div><strong>Solte a imagem do carrossel</strong></div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">PNG/JPG larga ou múltiplos arquivos · ou clique</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">PNG/JPG larga ou múltiplos arquivos, ou clique</div>
         </div>
 
         <div class="grid-edit" id="grid-edit" style="display:none">
@@ -55,7 +55,7 @@ app.innerHTML = `
 mountProfileMenu(document.getElementById("profile-menu")!, store);
 mountFieldsForm(document.getElementById("controls")!, store);
 mountIGFrame(document.getElementById("ig-frame")!, store);
-// Drafts menu UI removed for cleaner topbar — autosave still runs in the background
+// drafts menu UI is gone now, autosave still runs in the background
 mountAutosave(store);
 
 // Upload pipeline
@@ -86,7 +86,7 @@ mountUploadZone(zone, input, async (files) => {
         },
       }));
       gridEdit.style.display = "block";
-      gridInfo.textContent = `Detectado: ${grid.nSlides} slides · ${grid.slideWidth}×${grid.slideHeight} (${grid.format})${grid.hasPadding ? ` · padding extra de ${grid.paddingPx}px` : ""}`;
+      gridInfo.textContent = `Detectado: ${grid.nSlides} slides, ${grid.slideWidth}x${grid.slideHeight} (${grid.format})${grid.hasPadding ? `, padding extra de ${grid.paddingPx}px` : ""}`;
       gridEditor?.destroy();
       gridEditor = mountGridEditor(gridStrip, {
         imageDataUrl: img.src,
@@ -107,7 +107,7 @@ mountUploadZone(zone, input, async (files) => {
           const currentN = s.carousel.cuts.length + 1;
           const newN = Math.max(1, Math.min(10, currentN + delta));
           if (newN === currentN) return;
-          // Distribute uniformly: N slides → cuts at i × (imageWidth / N)
+          // distribute evenly: for N slides, cuts at i * (imageWidth / N)
           const W = currentSourceImage.naturalWidth / newN;
           const cuts: number[] = [];
           for (let i = 1; i < newN; i++) cuts.push(W * i);

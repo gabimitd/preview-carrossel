@@ -1,5 +1,5 @@
 /**
- * Resize a File (image) to fit inside maxSize × maxSize. Returns a data URL (PNG).
+ * Resize a File (image) to fit inside maxSize by maxSize. Returns a data URL (PNG).
  * Centers crop to a square if not already square.
  */
 export async function resizeImageFile(

@@ -42,7 +42,7 @@
   color: var(--accent, #818cf8);
 }
 
-/* Dropdown content (shadcn-style) */
+/* Dropdown content */
 .menu-content {
   position: absolute;
   top: calc(100% + 6px);
@@ -165,7 +165,7 @@
 }
 .menu-item[data-selected="true"] .menu-item-check { opacity: 1; }
 
-/* Explicit "Save now" item — pinned at top of Recentes */
+/* "Save now" item, pinned at top of Recentes */
 .menu-save-now {
   background: color-mix(in srgb, var(--accent, #818cf8) 12%, transparent);
   margin-bottom: 4px;

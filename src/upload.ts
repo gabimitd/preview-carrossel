@@ -6,7 +6,7 @@ export async function loadImageFromFile(file: File): Promise<HTMLImageElement> {
     img.onerror = () => reject(new Error(`Failed to load ${file.name}`));
     img.src = url;
   });
-  // Don't revoke — Canvas needs the live image. Released on page unload.
+  // don't revoke, Canvas needs the live image (released on page unload)
   return img;
 }
 

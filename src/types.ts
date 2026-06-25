@@ -3,7 +3,7 @@ export type DraftId = string;
 
 export interface Profile {
   id: ProfileId;
-  avatarDataUrl: string; // resized to 200×200
+  avatarDataUrl: string; // resized to 200x200
   username: string;      // without "@", max 30 chars
   verified: boolean;
 }

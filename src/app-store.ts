@@ -17,7 +17,7 @@ const KEY_DRAFTS = "pc.drafts";
 
 export function loadInitialState(): AppState {
   const theme = loadJSON<ThemeState>(KEY_THEME, DEFAULT_THEME);
-  // Keep app and IG frame themes in sync — the user toggles only the app theme
+  // app and IG frame themes stay in sync; user only toggles the app one
   theme.igFrame = theme.app;
   return {
     profiles: loadJSON<Profile[]>(KEY_PROFILES, []),

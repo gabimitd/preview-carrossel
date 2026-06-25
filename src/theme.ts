@@ -54,7 +54,7 @@ export function mountThemeToggles(
           | "device";
         const v = b.dataset.v as string;
         store.update((s) => {
-          // App theme also drives the IG frame theme — they stay in sync
+          // app theme also sets the IG frame theme, they stay in sync
           if (seg === "app") {
             return {
               ...s,

@@ -1,4 +1,4 @@
-/* ───── Tokens ───── */
+/* Tokens */
 :root {
   --bg: #fafafa;
   --bg-elevated: #ffffff;
@@ -67,7 +67,7 @@ body[data-app-theme="dark"]::before {
 
 #app { position: relative; z-index: 1; }
 
-/* ───── Layout shell ───── */
+/* Layout shell */
 .app-shell {
   max-width: 1320px;
   margin: 0 auto;
@@ -78,7 +78,7 @@ body[data-app-theme="dark"]::before {
   position: relative;
 }
 
-/* ───── Floating top-right control column (vertical stack) ───── */
+/* Floating top-right control column (vertical stack) */
 .topbar-right {
   position: absolute;
   top: 14px;
@@ -88,7 +88,7 @@ body[data-app-theme="dark"]::before {
   flex-direction: column;
   align-items: flex-end;
   gap: 6px;
-  /* No outer pill — each child is its own pill */
+  /* no outer pill, each child is its own pill */
   background: transparent;
   border: none;
   padding: 0;
@@ -97,7 +97,7 @@ body[data-app-theme="dark"]::before {
   min-height: 0;
 }
 
-/* ───── Cards (panels) ───── */
+/* Cards (panels) */
 .upload-zone,
 .grid-edit,
 .left-col .controls,
@@ -110,7 +110,7 @@ body[data-app-theme="dark"]::before {
   box-shadow: var(--shadow-sm);
 }
 
-/* ───── Upload zone (compact) ───── */
+/* Upload zone (compact) */
 .upload-zone {
   border: 1.5px dashed var(--border-strong);
   background: var(--panel);
@@ -136,7 +136,7 @@ body[data-app-theme="dark"]::before {
   letter-spacing: -0.01em;
 }
 
-/* ───── Grid editor section ───── */
+/* Grid editor section */
 .grid-edit { padding: 12px 14px; }
 .grid-edit h3 {
   font-size: 10.5px;
@@ -147,7 +147,7 @@ body[data-app-theme="dark"]::before {
   font-weight: 600;
 }
 
-/* ───── Work area: form on left, preview centered, narrow right reserved for floating pills ───── */
+/* Work area: form on left, preview centered, narrow right reserved for floating pills */
 .work {
   display: grid;
   grid-template-columns: 320px 1fr 90px;
@@ -167,7 +167,7 @@ body[data-app-theme="dark"]::before {
   overflow: visible;
 }
 
-/* ───── Preview (no card — floats on background, in the middle column) ───── */
+/* Preview: no card, floats on the background in the middle column */
 .preview {
   grid-column: 2;
   display: flex;
@@ -195,7 +195,7 @@ body[data-app-theme="dark"]::before {
   max-width: 880px;
 }
 
-/* ───── Actions bar (compact) ───── */
+/* Actions bar (compact) */
 .actions-bar {
   display: flex;
   gap: 8px;
@@ -234,7 +234,7 @@ body[data-app-theme="dark"]::before {
   box-shadow: 0 6px 20px -4px rgba(236, 72, 153, 0.5);
 }
 
-/* ───── Responsive ───── */
+/* Responsive */
 @media (max-width: 1100px) {
   /* Still need the 90px right buffer for the floating pills */
   .work { grid-template-columns: 300px 1fr 90px; }
@@ -249,7 +249,7 @@ body[data-app-theme="dark"]::before {
   .app-shell { padding: 10px 10px 24px; }
 }
 
-/* ───── Focus ───── */
+/* Focus */
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,

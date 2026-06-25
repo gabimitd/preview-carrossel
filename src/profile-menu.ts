@@ -5,7 +5,7 @@ import { openProfileModal } from "./profiles";
 import { restoreDraft, deleteDraft, saveDraftSnapshot } from "./drafts";
 
 /**
- * Unified shadcn-style dropdown menu that consolidates:
+ * Unified dropdown menu that consolidates:
  * - Active profile + edit/add profile shortcut
  * - Device (mobile / desktop) radio choice
  * - App + IG theme (claro / escuro) radio choice
@@ -225,7 +225,7 @@ export function mountProfileMenu(
       btn.classList.add("saved");
       setTimeout(() => {
         btn.classList.remove("saved");
-        // Don't restore innerHTML — the store re-render already redrew the menu
+        // don't restore innerHTML, the store re-render already redrew the menu
       }, 1200);
     });
   }
@@ -244,7 +244,7 @@ function renderRecents(drafts: Draft[]): string {
       const cap = d.post.caption.trim();
       const title = cap
         ? cap.length > 30
-          ? escapeHtml(cap.slice(0, 28)) + "…"
+          ? escapeHtml(cap.slice(0, 28)) + "..."
           : escapeHtml(cap)
         : `${d.carouselSlides.length} slide${d.carouselSlides.length === 1 ? "" : "s"}`;
       return `
@@ -252,7 +252,7 @@ function renderRecents(drafts: Draft[]): string {
           <img src="${d.thumbnailDataUrl}" alt="" />
           <div class="label">
             <div class="title">${title}</div>
-            <div class="time">${formatRelativeTime(d.createdAt)} · ${d.carouselSlides.length} slides</div>
+            <div class="time">${formatRelativeTime(d.createdAt)}, ${d.carouselSlides.length} slides</div>
           </div>
           <button class="del-draft" data-del-draft="${d.id}" title="Excluir rascunho" type="button" aria-label="Excluir rascunho">×</button>
         </div>

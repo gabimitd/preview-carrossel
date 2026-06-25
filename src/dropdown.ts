@@ -18,9 +18,8 @@ export interface DropdownInstance {
 }
 
 /**
- * Vanilla TS dropdown with shadcn/Radix-style aesthetics:
- * fade+zoom popover, checkmark on selected item, click-outside to close,
- * Esc to close, focus ring on trigger.
+ * Small vanilla-TS dropdown: fade+zoom popover, checkmark on the selected
+ * item, click outside or Esc to close, focus ring on the trigger.
  */
 export function mountDropdown(
   container: HTMLElement,

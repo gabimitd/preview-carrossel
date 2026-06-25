@@ -151,7 +151,7 @@ export function mountIGFrame(
       track.style.transition = TRANSITION;
 
       if (target !== dragBaseSlide) {
-        // store update will trigger render → FLIP animates from current drag position to target
+        // store update triggers a render, FLIP animates from the current drag position to the target
         setActive(target);
       } else {
         // Snap back to current

@@ -30,7 +30,7 @@ export function mountGridEditor(
   const actions = document.createElement("div");
   actions.className = "grid-actions";
   const minus = document.createElement("button");
-  minus.textContent = "− slide";
+  minus.textContent = "- slide";
   const plus = document.createElement("button");
   plus.textContent = "+ slide";
   actions.append(minus, plus);
@@ -68,7 +68,7 @@ export function mountGridEditor(
       const N = cuts.length + 1; // total slides
       // Bounds for the dragged cut so all cuts stay inside (0, imageWidth)
       // After drag: W = newC / (idx+1); last cut = (N-1)*W = (N-1)/(idx+1) * newC
-      // Require last cut < imageWidth → newC < (idx+1)/(N-1) * imageWidth
+      // need last cut < imageWidth, so newC < (idx+1)/(N-1) * imageWidth
       const minC = idx + 1; // W >= 1
       const maxC =
         N > 1 ? ((idx + 1) * (opts.imageWidth - 1)) / (N - 1) : opts.imageWidth - 1;

@@ -25,12 +25,11 @@ const FORMATS: FormatSpec[] = [
 const HEIGHT_TOLERANCE_PX = 50;
 
 /**
- * Detect carousel grid from image dimensions.
+ * Detect the carousel grid from the image dimensions.
  *
- * Strategy: anchor by height first (most reliable signal — common Instagram
- * exports use one of three exact heights). If the height doesn't match any
- * standard within tolerance, fall back to the format with minimum padding,
- * with a tiebreaker preferring more slides.
+ * Anchors by height first, since Instagram exports usually use one of three
+ * exact heights. If the height doesn't match a standard within tolerance, it
+ * falls back to the format with the least padding, breaking ties by slide count.
  */
 export function detectGrid(width: number, height: number): DetectResult {
   // Primary: anchor by standard height

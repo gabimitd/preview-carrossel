@@ -109,7 +109,7 @@ export function openProfileModal(store: Store<AppState>): void {
       avatarPreviewEl.style.display = "block";
     };
     reader.readAsDataURL(file);
-    fileLabel.textContent = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
+    fileLabel.textContent = file.name.length > 22 ? file.name.slice(0, 20) + "..." : file.name;
   });
 
   function drawList() {
@@ -181,7 +181,7 @@ export function openProfileModal(store: Store<AppState>): void {
     }
 
     if (editingId) {
-      // Edit existing — avatar only changes if a new file was picked
+      // editing: avatar only changes if a new file was picked
       const newAvatarUrl = fileInput.files?.[0]
         ? await resizeImageFile(fileInput.files[0], 200)
         : null;
@@ -201,7 +201,7 @@ export function openProfileModal(store: Store<AppState>): void {
       }));
       exitEditMode();
     } else {
-      // Create — file is required
+      // new profile: a file is required
       if (!fileInput.files?.[0]) {
         alert("Selecione uma logo.");
         return;
